@@ -4,12 +4,17 @@ import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.Set;
 
+import com.spring.pokemon.species.PokemonSpecies;
+import com.spring.pokemon.trainer.Trainer;
+
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Pokemon {
@@ -19,23 +24,23 @@ public class Pokemon {
 
 	private String name;
 
-    @ElementCollection(targetClass = ElementType.class)
-    @Enumerated(EnumType.STRING)
-    private Set<ElementType> types = EnumSet.noneOf(ElementType.class);
+    @ManyToOne(optional = false)
+    @JoinColumn(name="pokemon_species_id")
+    private PokemonSpecies species;
+
+    private int level;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "trainer_id")
+    private Trainer owner;
 	
 	public Pokemon() {
-//		this.types = null;
 	}
 	
-	public Pokemon(String name, ElementType primary, ElementType secondary) {
+	public Pokemon(String name, int level) {
         this.name = name;
-        this.types.add(primary);
-        if (secondary != null) {
-            this.types.add(secondary);
-        }
+        this.level = level;
     }
-
-
 
 	public Integer getId() {
 		return id;
@@ -52,11 +57,16 @@ public class Pokemon {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-    public Set<ElementType> getTypes() {
-        return types;
-    }
-
+	public String getTrainer() {
+		return owner.getUsername();
+	}
+	public int getLevel() {
+		return level;
+	}
+    
+//    public void setOwner(Trainer owner) {
+//        this.owner = owner;
+//    }
 
 	@Override
 	public String toString() {

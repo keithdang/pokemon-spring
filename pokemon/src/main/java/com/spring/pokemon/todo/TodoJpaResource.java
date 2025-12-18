@@ -28,6 +28,7 @@ public class TodoJpaResource {
 	@GetMapping("/users/{username}/todos")
 	public List<Todo> retrieveTodos(@PathVariable String username) {
 		//return todoService.findByUsername(username);
+		System.out.println("KDLOG TODOJPA "+username);
 		return todoRepository.findByUsername(username);
 	}
 

@@ -1,4 +1,4 @@
-package com.spring.pokemon.todo;
+package com.spring.pokemon.characters;
 
 import java.util.List;
 
@@ -13,45 +13,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.spring.pokemon.todo.Todo;
 import com.spring.pokemon.todo.TodoService;
 
-public class TodoResource {
+public class PokemonResource {
 	
-	private TodoService todoService;
+	private PokemonService todoService;
 	
-	public TodoResource(TodoService todoService) {
+	public PokemonResource(PokemonService todoService) {
 		this.todoService = todoService;
 	}
 	
-	@GetMapping("/users/{username}/todos")
-	public List<Todo> retrieveTodos(@PathVariable String username) {
-		System.out.println("KDLOG TODO "+username);
+	@GetMapping("/users/{username}/pokemon")
+	public List<Pokemon> retrieveTodos(@PathVariable String username) {
 		return todoService.findByUsername(username);
 	}
 
-	@GetMapping("/users/{username}/todos/{id}")
-	public Todo retrieveTodo(@PathVariable String username,
+	@GetMapping("/users/{username}/pokemon/{id}")
+	public Pokemon retrieveTodo(@PathVariable String username,
 			@PathVariable int id) {
 		return todoService.findById(id);
 	}
 
-	@DeleteMapping("/users/{username}/todos/{id}")
+	@DeleteMapping("/users/{username}/pokemon/{id}")
 	public ResponseEntity<Void> deleteTodo(@PathVariable String username,
 			@PathVariable int id) {
 		todoService.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/users/{username}/todos/{id}")
-	public Todo updateTodo(@PathVariable String username,
-			@PathVariable int id, @RequestBody Todo todo) {
-		todoService.updateTodo(todo);
+	@PutMapping("/users/{username}/pokemon/{id}")
+	public Pokemon updateTodo(@PathVariable String username,
+			@PathVariable int id, @RequestBody Pokemon todo) {
+		todoService.updatePokemon(todo);
 		return todo;
 	}
 
-	@PostMapping("/users/{username}/todos")
-	public Todo createTodo(@PathVariable String username,
-			 @RequestBody Todo todo) {
-		Todo createdTodo = todoService.addTodo(username, todo.getDescription(), 
-				todo.getTargetDate(),todo.isDone() );
+	@PostMapping("/users/{username}/pokemon")
+	public Pokemon  createTodo(@PathVariable String username,
+			 @RequestBody Pokemon todo) {
+		Pokemon createdTodo = todoService.addTodo(username, todo.getLevel() );
 		
 		return createdTodo;
 	}

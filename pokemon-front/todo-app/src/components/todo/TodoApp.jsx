@@ -9,6 +9,8 @@ import TodoComponent from './TodoComponent'
 import AuthProvider, { useAuth } from './security/AuthContext'
 
 import './TodoApp.css'
+import PokemonComponent from '../pokemon/PokemonComponent'
+import TrainerPokemonComponent from '../pokemon/TrainerPokemonComponent'
 
 function AuthenticatedRoute({children}) {
     const authContext = useAuth()
@@ -47,6 +49,17 @@ export default function TodoApp() {
                             </AuthenticatedRoute>
                         } />
   
+                        <Route path='/pokemon' element={
+                            <AuthenticatedRoute>
+                                <PokemonComponent /> 
+                            </AuthenticatedRoute>
+                        } />
+
+                        <Route path='/trainerpokemon' element={
+                            <AuthenticatedRoute>
+                                <TrainerPokemonComponent /> 
+                            </AuthenticatedRoute>
+                        } />
 
                         <Route path='/logout' element={
                             <AuthenticatedRoute>

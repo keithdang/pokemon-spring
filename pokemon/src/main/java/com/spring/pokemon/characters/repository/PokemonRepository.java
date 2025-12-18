@@ -9,6 +9,8 @@ import com.spring.pokemon.todo.Todo;
 
 public interface PokemonRepository extends JpaRepository<Pokemon, Integer>{
 	
-	List<Pokemon> findByName(String name);
+	List<Pokemon> findByOwnerUsername(String username);
+	
+	List<Pokemon> findAll();
 
 }

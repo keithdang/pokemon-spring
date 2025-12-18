@@ -1,4 +1,4 @@
-package com.spring.pokemon.characters;
+package com.spring.pokemon.species;
 
 import java.util.List;
 
@@ -11,42 +11,40 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.pokemon.characters.repository.PokemonRepository;
-import com.spring.pokemon.todo.repository.TodoRepository;
+import com.spring.pokemon.species.repository.PokemonSpeciesRepository;
 
 @RestController
-public class PokemonJpaResource {
+public class PokemonSpeciesJpaResource {
 	
-	private PokemonService pokemonService;
+	private PokemonSpeciesService pokemonService;
 	
-	private PokemonRepository pokemonRepository;
+	private PokemonSpeciesRepository pokemonRepository;
 	
-	public PokemonJpaResource(PokemonService todoService, PokemonRepository todoRepository) {
+	public PokemonSpeciesJpaResource(PokemonSpeciesService todoService, PokemonSpeciesRepository todoRepository) {
 		this.pokemonService = todoService;
 		this.pokemonRepository = todoRepository;
 	}
 
-	@GetMapping("/pokemon")
-	public List<Pokemon> retrieveAllPokemon() {
+	@GetMapping("/pokemonspecies")
+	public List<PokemonSpecies> retrieveAllPokemon() {
 		//return todoService.findByUsername(username);
 		return pokemonRepository.findAll();
 	}
 	
-	@GetMapping("/users/{username}/pokemon")
-	public List<Pokemon> retrievePokemons(@PathVariable String username) {
+	@GetMapping("/users/{username}/pokemonspecies")
+	public List<PokemonSpecies> retrievePokemons(@PathVariable String username) {
 		//return todoService.findByUsername(username);
-		System.out.println("KDLOG"+username);
-		return pokemonRepository.findByOwnerUsername(username);
+		return pokemonRepository.findByName(username);
 	}
 
-	@GetMapping("/users/{username}/pokemon/{id}")
-	public Pokemon retrievePokemon(@PathVariable String username,
+	@GetMapping("/users/{username}/pokemonspecies/{id}")
+	public PokemonSpecies retrievePokemon(@PathVariable String username,
 			@PathVariable int id) {
 		//return todoService.findById(id);
 		return pokemonRepository.findById(id).get();
 	}
 
-	@DeleteMapping("/users/{username}/pokemon/{id}")
+	@DeleteMapping("/users/{username}/pokemonspecies/{id}")
 	public ResponseEntity<Void> deletePokemon(@PathVariable String username,
 			@PathVariable int id) {
 		//todoService.deleteById(id);
@@ -54,17 +52,17 @@ public class PokemonJpaResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/users/{username}/pokemon/{id}")
-	public Pokemon updatePokemon(@PathVariable String username,
-			@PathVariable int id, @RequestBody Pokemon todo) {
+	@PutMapping("/users/{username}/pokemonspecies/{id}")
+	public PokemonSpecies updatePokemon(@PathVariable String username,
+			@PathVariable int id, @RequestBody PokemonSpecies todo) {
 		//todoService.updateTodo(todo);
 		pokemonRepository.save(todo);
 		return todo;
 	}
 
-	@PostMapping("/users/{username}/pokemon")
-	public Pokemon createPokemon(@PathVariable String username,
-			 @RequestBody Pokemon todo) {
+	@PostMapping("/users/{username}/pokemonspecies")
+	public PokemonSpecies createPokemon(@PathVariable String username,
+			 @RequestBody PokemonSpecies todo) {
 		todo.setName(username);
 		todo.setId(null);
 		return pokemonRepository.save(todo);

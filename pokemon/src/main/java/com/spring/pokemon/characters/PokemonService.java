@@ -6,6 +6,8 @@ import java.util.function.Predicate;
 
 import org.springframework.stereotype.Service;
 
+import com.spring.pokemon.todo.Todo;
+
 @Service
 public class PokemonService {
 	
@@ -19,14 +21,21 @@ public class PokemonService {
 //		pokemonList.add(new Pokemon(++pokemonCount, "bulbasaur",ElementType.GRASS, null));
 //	}
 	
+	public List<Pokemon> findAll(){
+		return pokemonList.stream().toList();
+	}
+	
 	public List<Pokemon> findByUsername(String username){
 		Predicate<? super Pokemon> predicate = 
-				todo -> todo.getName().equalsIgnoreCase(username);
+				todo -> todo.getTrainer().equalsIgnoreCase(username);
+		System.out.println("KDLOG2"+username);
+		System.out.println("KDLOG"+pokemonList);
+		System.out.println("KDLOG"+predicate);
 		return pokemonList.stream().filter(predicate).toList();
 	}
 	
-	public Pokemon addTodo(String username, ElementType primary, ElementType secondary) {
-		Pokemon pokemon = new Pokemon(username, primary, secondary);
+	public Pokemon addTodo(String username, int level) {
+		Pokemon pokemon = new Pokemon(username, level);
 		pokemonList.add(pokemon);
 		return pokemon;
 	}
