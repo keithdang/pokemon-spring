@@ -33,10 +33,10 @@ INSERT INTO pokemon_species_types (pokemon_species_id, types)
 VALUES (7, 'WATER');
 
 INSERT INTO pokemon (id, name, trainer_id, pokemon_species_id, level)
-VALUES (1, 'froggy', 1, 1, 1);
+VALUES (101, 'froggy', 1, 1, 1);
 
 INSERT INTO pokemon (id, name, trainer_id, pokemon_species_id, level)
-VALUES (2, 'bernie', 2, 4, 3);
+VALUES (102, 'bernie', 2, 4, 3);
 --
 --INSERT INTO pokemon (id, name)
 --VALUES (7, 'Squirtle');

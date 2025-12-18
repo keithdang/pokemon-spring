@@ -32,8 +32,6 @@ public class PokemonController {
                 .orElseThrow(() -> new RuntimeException("Trainer not found"));
 
         Pokemon pokemon = new Pokemon(
-                req.name(),
-                req.level()
         );
         
         trainer.addPokemon(pokemon);

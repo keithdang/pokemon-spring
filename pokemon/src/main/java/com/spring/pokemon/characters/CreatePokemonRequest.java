@@ -2,5 +2,6 @@ package com.spring.pokemon.characters;
 
 public record CreatePokemonRequest(
         String name,
-        int level
+        int level,
+        Integer speciesId
 ) {}

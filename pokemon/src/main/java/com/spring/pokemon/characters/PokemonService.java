@@ -35,7 +35,7 @@ public class PokemonService {
 	}
 	
 	public Pokemon addTodo(String username, int level) {
-		Pokemon pokemon = new Pokemon(username, level);
+		Pokemon pokemon = new Pokemon();
 		pokemonList.add(pokemon);
 		return pokemon;
 	}

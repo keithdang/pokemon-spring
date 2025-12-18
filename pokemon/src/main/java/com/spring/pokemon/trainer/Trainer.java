@@ -3,6 +3,7 @@ package com.spring.pokemon.trainer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.pokemon.characters.Pokemon;
 
 import jakarta.persistence.CascadeType;
@@ -23,6 +24,7 @@ public class Trainer {
     private String username;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Pokemon> pokemon = new ArrayList<>();
 
     protected Trainer() {}

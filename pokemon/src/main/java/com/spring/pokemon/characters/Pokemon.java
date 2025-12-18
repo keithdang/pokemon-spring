@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,7 +20,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Pokemon {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //TODO RESOLVE WHEN SWITCHING OUT OF H2
 	private Integer id;
 
 	private String name;
@@ -37,10 +38,10 @@ public class Pokemon {
 	public Pokemon() {
 	}
 	
-	public Pokemon(String name, int level) {
-        this.name = name;
-        this.level = level;
-    }
+//	public Pokemon(String name, int level) {
+//        this.name = name;
+//        this.level = level;
+//    }
 
 	public Integer getId() {
 		return id;
@@ -57,17 +58,25 @@ public class Pokemon {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getTrainer() {
 		return owner.getUsername();
 	}
+	
 	public int getLevel() {
 		return level;
 	}
+	
+	public void setLevel(int level) {
+		this.level = level;
+	}
     
-//    public void setOwner(Trainer owner) {
-//        this.owner = owner;
-//    }
-
+    public PokemonSpecies getSpecies() { return species; }
+    public void setSpecies(PokemonSpecies species) { this.species = species; }
+    
+    public Trainer getOwner() { return owner; }
+    
+    public void setOwner(Trainer owner) { this.owner = owner; }
 	@Override
 	public String toString() {
 		return "Pokemon [id=" + id + ", name=" + name +"]";

@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.pokemon.characters.repository.PokemonRepository;
+import com.spring.pokemon.species.PokemonSpecies;
+import com.spring.pokemon.species.repository.PokemonSpeciesRepository;
 import com.spring.pokemon.todo.repository.TodoRepository;
+import com.spring.pokemon.trainer.Trainer;
+import com.spring.pokemon.trainer.repository.TrainerRepository;
 
 @RestController
 public class PokemonJpaResource {
@@ -20,10 +24,17 @@ public class PokemonJpaResource {
 	private PokemonService pokemonService;
 	
 	private PokemonRepository pokemonRepository;
+	private final TrainerRepository trainerRepository;
+    private final PokemonSpeciesRepository speciesRepository;
 	
-	public PokemonJpaResource(PokemonService todoService, PokemonRepository todoRepository) {
+	public PokemonJpaResource(PokemonService todoService, 
+			PokemonRepository todoRepository,
+			TrainerRepository trainerRepository,
+			PokemonSpeciesRepository speciesRepository) {
 		this.pokemonService = todoService;
 		this.pokemonRepository = todoRepository;
+		this.trainerRepository = trainerRepository;
+		this.speciesRepository = speciesRepository;
 	}
 
 	@GetMapping("/pokemon")
@@ -64,10 +75,21 @@ public class PokemonJpaResource {
 
 	@PostMapping("/users/{username}/pokemon")
 	public Pokemon createPokemon(@PathVariable String username,
-			 @RequestBody Pokemon todo) {
-		todo.setName(username);
-		todo.setId(null);
-		return pokemonRepository.save(todo);
+			 @RequestBody CreatePokemonRequest request) {
+        Trainer trainer = trainerRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Trainer not found"));
+
+        PokemonSpecies species = speciesRepository.findById(request.speciesId())
+                .orElseThrow(() -> new RuntimeException("Species not found"));
+        System.out.println("KDLOG:"+request);
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName(request.name());
+        pokemon.setLevel(request.level());
+        pokemon.setOwner(trainer);
+        pokemon.setSpecies(species);
+
+        return pokemonRepository.save(pokemon);
 	}
 
 }
