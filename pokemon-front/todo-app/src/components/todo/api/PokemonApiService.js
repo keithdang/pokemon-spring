@@ -6,3 +6,6 @@ export const retrieveAllPokemon
 
 export const retrieveUserPokemon
     = (username) => apiClient.get(`/users/${username}/pokemon`)
+
+export const addPokemonToTrainer
+    = (username,  pokemon) => apiClient.post(`/users/${username}/pokemon`, pokemon)
