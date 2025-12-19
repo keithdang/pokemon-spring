@@ -37,6 +37,18 @@ VALUES (101, 'froggy', 1, 1, 1);
 
 INSERT INTO pokemon (id, name, trainer_id, pokemon_species_id, level)
 VALUES (102, 'bernie', 2, 4, 3);
+
+INSERT INTO move (id, name,element_type,damage)
+VALUES (1, 'Flamethrower', 'FIRE',10);
+
+INSERT INTO move (id, name,element_type,damage)
+VALUES (2, 'Razor Leaf', 'GRASS',10);
+
+INSERT INTO move (id, name,element_type,damage)
+VALUES (3, 'Hydro Pump', 'WATER', 20);
+
+INSERT INTO move (id, name,element_type,damage)
+VALUES (4, 'Tackle', 'NORMAL', 10);
 --
 --INSERT INTO pokemon (id, name)
 --VALUES (7, 'Squirtle');
