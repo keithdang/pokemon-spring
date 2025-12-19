@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../todo/security/AuthContext'
-import { deletePokemon, retrieveUserPokemon } from '../todo/api/PokemonApiService'
+import { useNavigate } from 'react-router-dom'
+import { deletePokemon, retrieveAllUserPokemon } from '../todo/api/PokemonApiService'
 export default function TrainerPokemonComponent() {
     const [pokemon,setPokemon] = useState([])
 
@@ -8,6 +9,7 @@ export default function TrainerPokemonComponent() {
     const authContext = useAuth()
     const username = authContext.username
     const [showDeleted, setShowDeleted] = useState(false)
+    const navigate = useNavigate()
 
     useEffect ( () => refreshPokemon(), [])
 
@@ -24,7 +26,7 @@ export default function TrainerPokemonComponent() {
 
     function refreshPokemon() {
         
-        retrieveUserPokemon(username)
+        retrieveAllUserPokemon(username)
         .then(response => {
             setPokemon(response.data)
         }
@@ -48,7 +50,8 @@ export default function TrainerPokemonComponent() {
                                 <th>Id</th>
                                 <th>Name</th>
                                 <th>Level</th>
-                                <th>Options</th>
+                                <th>View</th>
+                                <th>Delete</th>
                             </tr>
                     </thead>
                     <tbody>
@@ -59,6 +62,14 @@ export default function TrainerPokemonComponent() {
                                     <td>{pokemonOb.id}</td>
                                     <td>{pokemonOb.name}</td>
                                     <td>{pokemonOb.level}</td>
+                                    <td>
+                                        <button
+                                            className="btn btn-info me-2"
+                                            onClick={() => navigate(`/trainerpokemon/${pokemonOb.id}`)}
+                                        >
+                                            View
+                                        </button>
+                                    </td>
                                     <td> <button className="btn btn-warning" 
                                                     onClick={() => deletePokemonCall(pokemonOb.id)}>Delete</button> </td>
                                 </tr>

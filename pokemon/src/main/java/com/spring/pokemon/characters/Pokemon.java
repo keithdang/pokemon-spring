@@ -1,20 +1,19 @@
 package com.spring.pokemon.characters;
 
-import java.time.LocalDate;
-import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Set;
 
+import com.spring.pokemon.moves.Move;
 import com.spring.pokemon.species.PokemonSpecies;
 import com.spring.pokemon.trainer.Trainer;
 
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -28,7 +27,15 @@ public class Pokemon {
     @ManyToOne(optional = false)
     @JoinColumn(name="pokemon_species_id")
     private PokemonSpecies species;
-
+    
+    @ManyToMany
+    @JoinTable(
+        name = "pokemon_moves",
+        joinColumns = @JoinColumn(name = "pokemon_id"),
+        inverseJoinColumns = @JoinColumn(name = "move_id")
+    )
+    private Set<Move> moves = new HashSet<>();
+    
     private int level;
     
     @ManyToOne(optional = false)
@@ -77,6 +84,12 @@ public class Pokemon {
     public Trainer getOwner() { return owner; }
     
     public void setOwner(Trainer owner) { this.owner = owner; }
+    
+	public Set<Move> getMoves() {
+		return moves;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Pokemon [id=" + id + ", name=" + name +"]";

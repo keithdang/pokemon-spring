@@ -1,6 +1,7 @@
 package com.spring.pokemon.characters;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.pokemon.characters.repository.PokemonRepository;
+import com.spring.pokemon.moves.Move;
 import com.spring.pokemon.species.PokemonSpecies;
 import com.spring.pokemon.species.repository.PokemonSpeciesRepository;
-import com.spring.pokemon.todo.repository.TodoRepository;
 import com.spring.pokemon.trainer.Trainer;
 import com.spring.pokemon.trainer.repository.TrainerRepository;
 
@@ -45,8 +46,6 @@ public class PokemonJpaResource {
 	
 	@GetMapping("/users/{username}/pokemon")
 	public List<Pokemon> retrievePokemons(@PathVariable String username) {
-		//return todoService.findByUsername(username);
-		System.out.println("KDLOG"+username);
 		return pokemonRepository.findByOwnerUsername(username);
 	}
 
@@ -88,8 +87,27 @@ public class PokemonJpaResource {
         pokemon.setLevel(request.level());
         pokemon.setOwner(trainer);
         pokemon.setSpecies(species);
-
+        species.getLearnableMoves()
+        .stream()
+        .limit(4)
+        .forEach(pokemon.getMoves()::add);
         return pokemonRepository.save(pokemon);
+	}
+	
+	@GetMapping("/users/{username}/pokemon/{id}/moves")
+	public Set<Move> getPokemonMoves(
+	        @PathVariable String username,
+	        @PathVariable Integer id
+	) {
+	    Pokemon pokemon = pokemonRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
+
+	    // (Optional but recommended) verify ownership
+	    if (!pokemon.getOwner().getUsername().equals(username)) {
+	        throw new RuntimeException("Not your Pokémon");
+	    }
+
+	    return pokemon.getMoves();
 	}
 
 }

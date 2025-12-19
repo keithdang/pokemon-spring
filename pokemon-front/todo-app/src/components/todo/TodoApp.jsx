@@ -11,6 +11,7 @@ import AuthProvider, { useAuth } from './security/AuthContext'
 import './TodoApp.css'
 import PokemonComponent from '../pokemon/PokemonComponent'
 import TrainerPokemonComponent from '../pokemon/TrainerPokemonComponent'
+import TrainerPokemonDetailComponent from '../pokemon/TrainerPokemonDetailComponent'
 
 function AuthenticatedRoute({children}) {
     const authContext = useAuth()
@@ -58,6 +59,12 @@ export default function TodoApp() {
                         <Route path='/trainerpokemon' element={
                             <AuthenticatedRoute>
                                 <TrainerPokemonComponent /> 
+                            </AuthenticatedRoute>
+                        } />
+
+                        <Route path='/trainerpokemon/:id' element={
+                            <AuthenticatedRoute>
+                                <TrainerPokemonDetailComponent />
                             </AuthenticatedRoute>
                         } />
 
