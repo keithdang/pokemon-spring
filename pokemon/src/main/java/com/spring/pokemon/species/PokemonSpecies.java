@@ -26,6 +26,8 @@ public class PokemonSpecies {
 
 	private String name;
 
+	private Integer baseHp;
+	
     @ElementCollection(targetClass = ElementType.class)
     @Enumerated(EnumType.STRING)
     private Set<ElementType> types = EnumSet.noneOf(ElementType.class);
@@ -45,8 +47,9 @@ public class PokemonSpecies {
 	public PokemonSpecies() {
 	}
 	
-	public PokemonSpecies(String name, ElementType primary, ElementType secondary) {
+	public PokemonSpecies(String name, ElementType primary, ElementType secondary, Integer baseHp) {
         this.name = name;
+        this.baseHp = baseHp;
         this.types.add(primary);
         if (secondary != null) {
             this.types.add(secondary);
@@ -79,6 +82,14 @@ public class PokemonSpecies {
 	@Override
 	public String toString() {
 		return "Pokemon [id=" + id + ", name=" + name +"]";
+	}
+
+	public Integer getBaseHp() {
+		return baseHp;
+	}
+
+	public void setBaseHp(Integer baseHp) {
+		this.baseHp = baseHp;
 	}
 
 }

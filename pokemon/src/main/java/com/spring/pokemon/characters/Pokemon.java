@@ -38,6 +38,9 @@ public class Pokemon {
     
     private int level;
     
+    private int maxHp;
+    private int currentHp;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "trainer_id")
     private Trainer owner;
@@ -45,10 +48,6 @@ public class Pokemon {
 	public Pokemon() {
 	}
 	
-//	public Pokemon(String name, int level) {
-//        this.name = name;
-//        this.level = level;
-//    }
 
 	public Integer getId() {
 		return id;
@@ -76,10 +75,14 @@ public class Pokemon {
 	
 	public void setLevel(int level) {
 		this.level = level;
+		recalculateHp(false);	
 	}
     
     public PokemonSpecies getSpecies() { return species; }
-    public void setSpecies(PokemonSpecies species) { this.species = species; }
+    public void setSpecies(PokemonSpecies species) { 
+    	this.species = species; 
+    	recalculateHp(true);	
+    }
     
     public Trainer getOwner() { return owner; }
     
@@ -89,10 +92,49 @@ public class Pokemon {
 		return moves;
 	}
 	
-	
+    public int getMaxHp() {
+        return maxHp;
+    }
+    
+    public int getCurrentHp() {
+        return currentHp;
+    }
+    
 	@Override
 	public String toString() {
 		return "Pokemon [id=" + id + ", name=" + name +"]";
 	}
+	
+	
+   private void recalculateHp(boolean fullHeal) {
+        if (species == null || level <= 0) return;
 
+        int iv = 31;   // fixed IV
+        int baseHp = species.getBaseHp();
+
+        int newMaxHp =
+            ((2 * baseHp + iv) * level) / 100 + level + 10;
+
+        if (fullHeal || this.maxHp == 0) {
+            this.currentHp = newMaxHp;
+        } else {
+            // Preserve HP percentage on level-up
+            double percent = (double) currentHp / maxHp;
+            this.currentHp = (int) Math.round(percent * newMaxHp);
+        }
+
+        this.maxHp = newMaxHp;
+    }
+   
+	   public void takeDamage(int damage) {
+	       this.currentHp = Math.max(0, this.currentHp - damage);
+	   }
+	
+	   public void heal(int amount) {
+	       this.currentHp = Math.min(maxHp, this.currentHp + amount);
+	   }
+	
+	   public boolean isFainted() {
+	       return currentHp <= 0;
+	   }
 }

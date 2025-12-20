@@ -21,19 +21,15 @@ import com.spring.pokemon.trainer.repository.TrainerRepository;
 
 @RestController
 public class PokemonJpaResource {
-	
-//	private PokemonService pokemonService;
-	
+
 	private PokemonRepository pokemonRepository;
 	private final TrainerRepository trainerRepository;
     private final PokemonSpeciesRepository speciesRepository;
 	
-	public PokemonJpaResource(
-//			PokemonService todoService, 
+	public PokemonJpaResource( 
 			PokemonRepository todoRepository,
 			TrainerRepository trainerRepository,
 			PokemonSpeciesRepository speciesRepository) {
-//		this.pokemonService = todoService;
 		this.pokemonRepository = todoRepository;
 		this.trainerRepository = trainerRepository;
 		this.speciesRepository = speciesRepository;
@@ -41,7 +37,6 @@ public class PokemonJpaResource {
 
 	@GetMapping("/pokemon")
 	public List<Pokemon> retrieveAllPokemon() {
-		//return todoService.findByUsername(username);
 		return pokemonRepository.findAll();
 	}
 	
@@ -53,14 +48,12 @@ public class PokemonJpaResource {
 	@GetMapping("/users/{username}/pokemon/{id}")
 	public Pokemon retrievePokemon(@PathVariable String username,
 			@PathVariable int id) {
-		//return todoService.findById(id);
 		return pokemonRepository.findById(id).get();
 	}
 
 	@DeleteMapping("/users/{username}/pokemon/{id}")
 	public ResponseEntity<Void> deletePokemon(@PathVariable String username,
 			@PathVariable int id) {
-		//todoService.deleteById(id);
 		pokemonRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
@@ -68,7 +61,6 @@ public class PokemonJpaResource {
 	@PutMapping("/users/{username}/pokemon/{id}")
 	public Pokemon updatePokemon(@PathVariable String username,
 			@PathVariable int id, @RequestBody Pokemon todo) {
-		//todoService.updateTodo(todo);
 		pokemonRepository.save(todo);
 		return todo;
 	}

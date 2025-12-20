@@ -11,8 +11,8 @@ insert into todo (id, description, done, target_date,username)
 values (10004, 'Learn SpringBoot', false, CURRENT_DATE(), 'keith');
 
 
-INSERT INTO pokemon_species (id, name)
-VALUES (1, 'Bulbasaur');
+INSERT INTO pokemon_species (id, name, base_hp)
+VALUES (1, 'Bulbasaur', 10);
 
 INSERT INTO pokemon_species_types (pokemon_species_id, types)
 VALUES (1, 'GRASS');
@@ -20,14 +20,14 @@ VALUES (1, 'GRASS');
 INSERT INTO pokemon_species_types (pokemon_species_id, types)
 VALUES (1, 'POISON');
 
-INSERT INTO pokemon_species (id, name)
-VALUES (4, 'Charmander');
+INSERT INTO pokemon_species (id, name, base_hp)
+VALUES (4, 'Charmander', 10);
 
 INSERT INTO pokemon_species_types (pokemon_species_id, types)
 VALUES (4, 'FIRE');
 
-INSERT INTO pokemon_species (id, name)
-VALUES (7, 'Squirtle');
+INSERT INTO pokemon_species (id, name, base_hp)
+VALUES (7, 'Squirtle', 10);
 
 INSERT INTO pokemon_species_types (pokemon_species_id, types)
 VALUES (7, 'WATER');

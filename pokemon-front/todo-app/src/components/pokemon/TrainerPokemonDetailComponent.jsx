@@ -35,7 +35,23 @@ export default function TrainerPokemonDetailComponent() {
 
     return (
         <div className="container">
-            <h3>{pokemon.name}</h3>
+            <h2>Info</h2>
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th>Hp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr key={pokemon.id}>
+                        <td>{pokemon.name}</td>
+                        <td>{pokemon.level}</td>
+                        <td>{pokemon.currentHp} / {pokemon.maxHp}</td>
+                    </tr>
+                </tbody>
+            </table>
             <h2>Moves</h2>
 
             <table className="table">

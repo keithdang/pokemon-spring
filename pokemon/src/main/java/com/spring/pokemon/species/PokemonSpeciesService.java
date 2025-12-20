@@ -32,11 +32,11 @@ public class PokemonSpeciesService {
 		return pokemonList.stream().filter(predicate).toList();
 	}
 	
-	public PokemonSpecies addTodo(String username, ElementType primary, ElementType secondary) {
-		PokemonSpecies pokemon = new PokemonSpecies(username, primary, secondary);
-		pokemonList.add(pokemon);
-		return pokemon;
-	}
+//	public PokemonSpecies addTodo(String username, ElementType primary, ElementType secondary) {
+//		PokemonSpecies pokemon = new PokemonSpecies(username, primary, secondary);
+//		pokemonList.add(pokemon);
+//		return pokemon;
+//	}
 	
 	public void deleteById(int id) {
 		Predicate<? super PokemonSpecies> predicate = pokemon -> pokemon.getId() == id;
