@@ -1,6 +1,7 @@
 package com.spring.pokemon.species;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.pokemon.characters.Pokemon;
+import com.spring.pokemon.moves.Move;
 import com.spring.pokemon.species.repository.PokemonSpeciesRepository;
 
 @RestController
@@ -29,6 +32,26 @@ public class PokemonSpeciesJpaResource {
 	public List<PokemonSpecies> retrieveAllPokemon() {
 		//return todoService.findByUsername(username);
 		return pokemonRepository.findAll();
+	}
+	
+	@GetMapping("/pokemonspecies/{id}")
+	public PokemonSpecies getPokemon(
+	        @PathVariable Integer id
+	) {
+		PokemonSpecies pokemon = pokemonRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
+
+	    return pokemon;
+	}
+	
+	@GetMapping("/pokemonspecies/{id}/moves")
+	public Set<Move> getPokemonMoves(
+	        @PathVariable Integer id
+	) {
+		PokemonSpecies pokemon = pokemonRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
+
+	    return pokemon.getLearnableMoves();
 	}
 	
 	@GetMapping("/users/{username}/pokemonspecies")

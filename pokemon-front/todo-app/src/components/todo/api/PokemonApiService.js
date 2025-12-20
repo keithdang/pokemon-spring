@@ -3,6 +3,8 @@ import { apiClient } from './ApiClient'
 export const retrieveAllPokemon
     = () => apiClient.get(`/pokemonspecies`)
 
+export const retrieveSpeciesPokemon
+    = (id) => apiClient.get(`/pokemonspecies/${id}`)
 
 export const retrieveAllUserPokemon
     = (username) => apiClient.get(`/users/${username}/pokemon`)
@@ -18,3 +20,7 @@ export const deletePokemon
 
 export const retrieveUserPokemonMoves
     = (username, pokemon) => apiClient.get(`/users/${username}/pokemon/${pokemon}/moves`)
+
+
+export const retrieveSpeciesPokemonMoves
+    = (id) => apiClient.get(`/pokemonspecies/${id}/moves`)

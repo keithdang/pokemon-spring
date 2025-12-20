@@ -22,17 +22,18 @@ import com.spring.pokemon.trainer.repository.TrainerRepository;
 @RestController
 public class PokemonJpaResource {
 	
-	private PokemonService pokemonService;
+//	private PokemonService pokemonService;
 	
 	private PokemonRepository pokemonRepository;
 	private final TrainerRepository trainerRepository;
     private final PokemonSpeciesRepository speciesRepository;
 	
-	public PokemonJpaResource(PokemonService todoService, 
+	public PokemonJpaResource(
+//			PokemonService todoService, 
 			PokemonRepository todoRepository,
 			TrainerRepository trainerRepository,
 			PokemonSpeciesRepository speciesRepository) {
-		this.pokemonService = todoService;
+//		this.pokemonService = todoService;
 		this.pokemonRepository = todoRepository;
 		this.trainerRepository = trainerRepository;
 		this.speciesRepository = speciesRepository;
