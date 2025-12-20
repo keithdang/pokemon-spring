@@ -27,7 +27,7 @@ public class Trainer {
     @JsonIgnore
     private List<Pokemon> pokemon = new ArrayList<>();
 
-    protected Trainer() {}
+    public Trainer() {}
 
     public Trainer(String username) {
         this.username = username;

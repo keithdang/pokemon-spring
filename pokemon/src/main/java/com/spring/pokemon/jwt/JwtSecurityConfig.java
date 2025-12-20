@@ -127,8 +127,12 @@ public class JwtSecurityConfig {
                 .authorities("read")
                 .roles("USER")
                 .build();
-
-        return new InMemoryUserDetailsManager(user, user2);
+        UserDetails user3 = User.withUsername("computer")
+                .password("{noop}dummy")
+                .authorities("read")
+                .roles("USER")
+                .build();
+        return new InMemoryUserDetailsManager(user, user2, user3);
     }
 
     @Bean

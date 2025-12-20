@@ -21,7 +21,7 @@ import jakarta.persistence.ManyToMany;
 @Entity
 public class PokemonSpecies {
 	@Id
-	@GeneratedValue
+//	@GeneratedValue
 	private Integer id;
 
 	private String name;
