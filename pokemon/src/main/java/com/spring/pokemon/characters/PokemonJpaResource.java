@@ -1,5 +1,6 @@
 package com.spring.pokemon.characters;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -126,7 +127,7 @@ public class PokemonJpaResource {
 	}
 	
 	@PutMapping("/users/{username}/pokemon/{id}/moves/{moveId}/opp/{oppId}")
-	public Pokemon attack(
+	public List<Pokemon> attack(
 	        @PathVariable String username,
 	        @PathVariable Integer id,
 	        @PathVariable Integer moveId,
@@ -142,11 +143,18 @@ public class PokemonJpaResource {
 	        throw new RuntimeException("Not your Pokémon");
 	    }
 
-	    Move moveOb = pokemon.getMoves().stream()
+	    Move userMove = pokemon.getMoves().stream()
 	            .filter(move -> move.getId().equals(moveId))
 	            .findFirst()
 	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
-	    oppPokemon.takeDamage(moveOb.getDamage());
-	    return pokemonRepository.save(oppPokemon);
+	    Move oppMove = oppPokemon.getMoves().iterator().next();
+	    oppPokemon.takeDamage(userMove.getDamage());
+	    if(oppPokemon.getCurrentHp() != 0) {
+	    	pokemon.takeDamage(oppMove.getDamage());	
+	    }
+	    ArrayList<Pokemon> pokeList = new ArrayList<Pokemon>();
+	    pokeList.add(pokemonRepository.save(oppPokemon));
+	    pokeList.add(pokemonRepository.save(pokemon));
+	    return pokeList;
 	}
 }

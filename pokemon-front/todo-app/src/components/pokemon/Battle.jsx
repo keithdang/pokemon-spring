@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { retrieveAllComputerPokemon, 
     retrieveAllUserPokemon,
     retrieveUserPokemonMoves,
-    attack
+    attack,
+    cpuAttack
 } from '../todo/api/PokemonApiService'
 import BasePokemonInfo from './BasePokemonInfo'
 
@@ -47,10 +48,13 @@ export default function Battle() {
     }
 
     function handleAttack(moveId, pokemonId, cpuId) {
-    attack(username, pokemonId, moveId, cpuId)
+        attack(username, pokemonId, moveId, cpuId)
         .then(response => {
             setMessage(response.data?.message ?? "Attack successful!");
-            refreshPokemon();   
+            // cpuAttack(pokemonId, moveId, cpuId).then(response2 => {
+            //     refreshPokemon();  
+            // })
+            refreshPokemon();  
         })
         .catch(error => {
             console.log(error);
