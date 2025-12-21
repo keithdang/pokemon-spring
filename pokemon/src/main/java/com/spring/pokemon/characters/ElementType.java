@@ -24,20 +24,3 @@ public enum ElementType {
     STEEL,
     FAIRY
 }
-//@Entity
-//public class ElementType {
-//	public ElementType() {
-//		
-//	}
-//	public ElementType(Integer id, String element) {
-//		super();
-//		this.id = id;
-//		this.element = element;
-//	}
-//	
-//	@Id
-//	@GeneratedValue
-//	private Integer id;
-//
-//	private String element;
-//}

@@ -148,9 +148,11 @@ public class PokemonJpaResource {
 	            .findFirst()
 	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
 	    Move oppMove = oppPokemon.getMoves().iterator().next();
-	    oppPokemon.takeDamage(userMove.getDamage());
+	    int userDamage = DamageCalculator.calculateDamage(pokemon, oppPokemon, userMove);
+	    oppPokemon.takeDamage(userDamage);
 	    if(oppPokemon.getCurrentHp() != 0) {
-	    	pokemon.takeDamage(oppMove.getDamage());	
+	    	int oppDamage = DamageCalculator.calculateDamage(oppPokemon, pokemon, oppMove);
+	    	pokemon.takeDamage(oppDamage);
 	    }
 	    ArrayList<Pokemon> pokeList = new ArrayList<Pokemon>();
 	    pokeList.add(pokemonRepository.save(oppPokemon));
