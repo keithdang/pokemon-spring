@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -169,5 +170,38 @@ public class PokemonJpaResource {
 	    pokeList.add(pokemonRepository.save(oppPokemon));
 	    pokeList.add(pokemonRepository.save(pokemon));
 	    return pokeList;
+	}
+	
+	@PutMapping("/change/users/{username}/pokemon/{id}")
+	public Pokemon changePokemon(@PathVariable String username,
+			@PathVariable int id) {
+	       Trainer computer = trainerRepository.findByUsername(username)
+	                .orElseGet(() -> trainerRepository.save(new Trainer(username)));
+	       pokemonRepository.deleteById(id);
+	       long speciesCount = speciesRepository.count();
+	       if (speciesCount == 0) {
+	           throw new RuntimeException("No Pokémon species available");
+	       }
+	       
+	       int randomIndex = ThreadLocalRandom.current()
+	               .nextInt((int) speciesCount);
+	       
+	       PokemonSpecies randomSpecies = speciesRepository
+	               .findAll()
+	               .stream()
+	               .skip(randomIndex)
+	               .findFirst()
+	               .orElseThrow(() -> new RuntimeException("Failed to select random species"));
+
+	       Pokemon newPokemon = new Pokemon();
+	       newPokemon.setName(randomSpecies.getName());
+	       newPokemon.setLevel(5);
+	       newPokemon.setOwner(computer);
+	       newPokemon.setSpecies(randomSpecies);
+	       randomSpecies.getLearnableMoves().stream()
+           .limit(4)
+           .forEach(newPokemon.getMoves()::add);
+
+	       return pokemonRepository.save(newPokemon);
 	}
 }

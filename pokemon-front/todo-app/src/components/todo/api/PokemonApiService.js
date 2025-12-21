@@ -29,3 +29,6 @@ export const retrieveSpeciesPokemonMoves
 
 export const attack
     = (username, pokemon, moveId, opponentPokemon) => apiClient.put(`/users/${username}/pokemon/${pokemon}/moves/${moveId}/opp/${opponentPokemon}`)
+
+export const changePokemon 
+    = (username, pokemon) => apiClient.put(`change/users/${username}/pokemon/${pokemon}`)

@@ -5,7 +5,7 @@ import { retrieveAllComputerPokemon,
     retrieveAllUserPokemon,
     retrieveUserPokemonMoves,
     attack,
-    cpuAttack
+    changePokemon
 } from '../todo/api/PokemonApiService'
 import BasePokemonInfo from './BasePokemonInfo'
 
@@ -15,6 +15,7 @@ export default function Battle() {
 
     const [message,setMessage] = useState(null)
     const [moves, setMoves] = useState([])
+    const [battle, setBattle] = useState(false)
     const authContext = useAuth()
     const username = authContext.username
     const navigate = useNavigate()
@@ -50,6 +51,17 @@ export default function Battle() {
     function handleAttack(moveId, pokemonId, cpuId) {
         attack(username, pokemonId, moveId, cpuId)
         .then(response => {
+            setMessage(response.data?.message ?? "Change successful!");
+            refreshPokemon();  
+        })
+        .catch(error => {
+            console.log(error);
+            setMessage("Change failed");
+        });
+}
+        function handleChangePokemon(pokemonId) {
+        changePokemon("computer", pokemonId)
+        .then(response => {
             setMessage(response.data?.message ?? "Attack successful!");
             // cpuAttack(pokemonId, moveId, cpuId).then(response2 => {
             //     refreshPokemon();  
@@ -70,37 +82,50 @@ export default function Battle() {
                 <BasePokemonInfo pokemon={cpuPokemon[0]}/>
             </div>
             }
-            {pokemon && pokemon[0] &&
+            {battle ? 
             <div>
-                <h3>You:</h3>
-                <BasePokemonInfo pokemon={pokemon[0]}/>
-               <h2>Moves</h2>
-               <table className="table">
-                       <thead>
-                           <tr>
-                               <th>Name</th>
-                               <th>Power</th>
-                               <th>Type</th>
-                           </tr>
-                       </thead>
-                       <tbody>
-                           {moves.map(move => (
-                               <tr key={move.id}>
-                                   <td>
-                                        <button
-                                            className="btn btn-info me-2"
-                                            onClick={() => handleAttack(move.id,pokemon[0].id, cpuPokemon[0].id)}
-                                        >
-                                            {move.name}
-                                        </button>
-                                   </td>
-                                   <td>{move.damage}</td>
-                                   <td>{move.type}</td>
-                               </tr>
-                           ))}
-                       </tbody>
-                   </table></div>
-        }
+                {pokemon && pokemon[0] &&
+                        <div>
+                            <h3>You:</h3>
+                            <BasePokemonInfo pokemon={pokemon[0]}/>
+                        <h2>Moves</h2>
+                        <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Power</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {moves.map(move => (
+                                        <tr key={move.id}>
+                                            <td>
+                                                    <button
+                                                        className="btn btn-info me-2"
+                                                        onClick={() => handleAttack(move.id,pokemon[0].id, cpuPokemon[0].id)}
+                                                    >
+                                                        {move.name}
+                                                    </button>
+                                            </td>
+                                            <td>{move.damage}</td>
+                                            <td>{move.type}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table></div>
+                    }
+            </div>:
+            <div>
+                <button onClick={() => setBattle(true)}>
+                    Start
+                </button>
+                <button onClick={() => handleChangePokemon(cpuPokemon[0].id)}>
+                    New Opponent
+                </button>
+            </div>
+            }
+      
         </div>
    )
 }
