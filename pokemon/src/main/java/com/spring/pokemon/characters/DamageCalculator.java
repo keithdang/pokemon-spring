@@ -4,12 +4,12 @@ import com.spring.pokemon.moves.Move;
 
 public class DamageCalculator {
 
-    public static int calculateDamage(
+    public static double calculateMultiplier(
             Pokemon attacker,
             Pokemon defender,
             Move move
     ) {
-        double baseDamage = move.getDamage();
+//        double baseDamage = move.getDamage();
 
         ElementType moveType = move.getType();
 
@@ -25,6 +25,14 @@ public class DamageCalculator {
         }
 
         // 3️⃣ Final damage
-        return (int) Math.round(baseDamage * typeMultiplier);
+//        return (int) Math.round(baseDamage * typeMultiplier);
+        return typeMultiplier;
+    }
+    
+    public static String effectivenessText(double multiplier) {
+        if (multiplier == 0.0) return "It had no effect!";
+        if (multiplier >= 2.0) return "It's super effective!";
+        if (multiplier < 1.0) return "It's not very effective...";
+        return "";
     }
 }

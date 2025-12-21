@@ -128,13 +128,57 @@ public class PokemonJpaResource {
 	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
 	}
 	
+//	@PutMapping("/users/{username}/pokemon/{id}/moves/{moveId}/opp/{oppId}")
+//	public List<Pokemon> attack(
+//	        @PathVariable String username,
+//	        @PathVariable Integer id,
+//	        @PathVariable Integer moveId,
+//	        @PathVariable Integer oppId
+//	) {
+//	    Pokemon pokemon = pokemonRepository.findById(id)
+//	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
+//
+//	    Pokemon oppPokemon = pokemonRepository.findById(oppId)
+//	            .orElseThrow(() -> new RuntimeException("Pokemon not found")); 
+//	    // Verify ownership
+//	    if (!pokemon.getOwner().getUsername().equals(username)) {
+//	        throw new RuntimeException("Not your Pokémon");
+//	    }
+//
+//	    Move userMove = pokemon.getMoves().stream()
+//	            .filter(move -> move.getId().equals(moveId))
+//	            .findFirst()
+//	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
+//	    
+//	    int userDamage = DamageCalculator.calculateDamage(pokemon, oppPokemon, userMove);
+//	    oppPokemon.takeDamage(userDamage);
+//	    if(oppPokemon.getCurrentHp() > 0) {
+//	        Move oppMove = oppPokemon.getMoves().stream()
+//	                .max(Comparator.comparingInt(
+//	                        move -> DamageCalculator.calculateDamage(
+//	                                oppPokemon,
+//	                                pokemon,
+//	                                move
+//	                        )
+//	                ))
+//	                .orElseThrow(() -> new RuntimeException("Opponent has no moves"));
+//
+//	        int oppDamage = DamageCalculator.calculateDamage(oppPokemon, pokemon, oppMove);
+//	        pokemon.takeDamage(oppDamage);
+//	    }
+//	    ArrayList<Pokemon> pokeList = new ArrayList<Pokemon>();
+//	    pokeList.add(pokemonRepository.save(oppPokemon));
+//	    pokeList.add(pokemonRepository.save(pokemon));
+//	    return pokeList;
+//	}
 	@PutMapping("/users/{username}/pokemon/{id}/moves/{moveId}/opp/{oppId}")
-	public List<Pokemon> attack(
+	public BattleResult attack(
 	        @PathVariable String username,
 	        @PathVariable Integer id,
 	        @PathVariable Integer moveId,
 	        @PathVariable Integer oppId
 	) {
+		List<String> log = new ArrayList<>();
 	    Pokemon pokemon = pokemonRepository.findById(id)
 	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
 
@@ -149,13 +193,25 @@ public class PokemonJpaResource {
 	            .filter(move -> move.getId().equals(moveId))
 	            .findFirst()
 	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
-//	    Move oppMove = oppPokemon.getMoves().iterator().next();
-	    int userDamage = DamageCalculator.calculateDamage(pokemon, oppPokemon, userMove);
-	    oppPokemon.takeDamage(userDamage);
+	    
+//	    int userDamage = DamageCalculator.calculateDamage(pokemon, oppPokemon, userMove);
+//	    oppPokemon.takeDamage(userDamage);
+	    double playerMultiplier =
+	            DamageCalculator.calculateMultiplier(pokemon, oppPokemon, userMove);
+
+	    int playerDamage = (int) Math.round(
+	    		userMove.getDamage() * playerMultiplier);
+
+	    oppPokemon.takeDamage(playerDamage);
+	    
+	    log.add(pokemon.getName() + " used " + userMove.getName() + "!");
+	    String eff = DamageCalculator.effectivenessText(playerMultiplier);
+	    if (!eff.isEmpty()) log.add(eff);
+	    
 	    if(oppPokemon.getCurrentHp() > 0) {
 	        Move oppMove = oppPokemon.getMoves().stream()
-	                .max(Comparator.comparingInt(
-	                        move -> DamageCalculator.calculateDamage(
+	                .max(Comparator.comparingDouble(
+	                        move -> DamageCalculator.calculateMultiplier(
 	                                oppPokemon,
 	                                pokemon,
 	                                move
@@ -163,13 +219,25 @@ public class PokemonJpaResource {
 	                ))
 	                .orElseThrow(() -> new RuntimeException("Opponent has no moves"));
 
-	        int oppDamage = DamageCalculator.calculateDamage(oppPokemon, pokemon, oppMove);
+	        double oppMultiplier =
+	                DamageCalculator.calculateMultiplier(oppPokemon, pokemon, oppMove);
+
+	        int oppDamage = (int) Math.round(
+	                oppMove.getDamage() * oppMultiplier);
+
 	        pokemon.takeDamage(oppDamage);
+
+	        log.add(oppPokemon.getName() + " used " + oppMove.getName() + "!");
+	        String oppEff = DamageCalculator.effectivenessText(oppMultiplier);
+	        if (!oppEff.isEmpty()) log.add(oppEff);
+	    }else {
+	        log.add(oppPokemon.getName() + " has fainted!");
 	    }
-	    ArrayList<Pokemon> pokeList = new ArrayList<Pokemon>();
-	    pokeList.add(pokemonRepository.save(oppPokemon));
-	    pokeList.add(pokemonRepository.save(pokemon));
-	    return pokeList;
+	    
+//	    ArrayList<Pokemon> pokeList = new ArrayList<Pokemon>();
+	    pokemonRepository.save(oppPokemon);
+	    pokemonRepository.save(pokemon);
+	    return new BattleResult(pokemon, oppPokemon, log);
 	}
 	
 	@PutMapping("/change/users/{username}/pokemon/{id}")

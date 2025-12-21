@@ -16,6 +16,7 @@ export default function Battle() {
     const [message,setMessage] = useState(null)
     const [moves, setMoves] = useState([])
     const [battle, setBattle] = useState(false)
+    const [battleLog, setBattleLog] = useState([])
     const authContext = useAuth()
     const username = authContext.username
     const navigate = useNavigate()
@@ -50,6 +51,24 @@ export default function Battle() {
 
     function handleAttack(moveId, pokemonId, cpuId) {
         attack(username, pokemonId, moveId, cpuId)
+                .then(response => {
+                        const { playerPokemon, opponentPokemon, log } = response.data
+
+                    setPokemon([playerPokemon])
+                    setCpuPokemon([opponentPokemon])
+                    setBattleLog(log)
+
+                    if (playerPokemon.currentHp <= 0 || opponentPokemon.currentHp <= 0) {
+                        setBattle(false)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    setMessage("Game failed")
+                })
+    }
+        function handleChangePokemon(pokemonId) {
+        changePokemon("computer", pokemonId)
         .then(response => {
             setMessage(response.data?.message ?? "Change successful!");
             refreshPokemon();  
@@ -59,23 +78,17 @@ export default function Battle() {
             setMessage("Change failed");
         });
 }
-        function handleChangePokemon(pokemonId) {
-        changePokemon("computer", pokemonId)
-        .then(response => {
-            setMessage(response.data?.message ?? "Attack successful!");
-            // cpuAttack(pokemonId, moveId, cpuId).then(response2 => {
-            //     refreshPokemon();  
-            // })
-            refreshPokemon();  
-        })
-        .catch(error => {
-            console.log(error);
-            setMessage("Attack failed");
-        });
-}
    return (
         <div className="container">
             <h1>Battle</h1>
+            {/* {message && <div className="alert alert-info">{message}</div>} */}
+            <ul className="list-group">
+                {battleLog.map((line, index) => (
+                    <li key={index} className="list-group-item">
+                        {line}
+                    </li>
+                ))}
+            </ul>
             {cpuPokemon && cpuPokemon[0] &&
             <div>
                 <h3>CPU:</h3>
