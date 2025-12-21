@@ -9,6 +9,9 @@ export const retrieveSpeciesPokemon
 export const retrieveAllUserPokemon
     = (username) => apiClient.get(`/users/${username}/pokemon`)
 
+export const retrieveAllComputerPokemon
+    = () => apiClient.get(`/users/computer/pokemon`)
+
 export const retrieveUserPokemon
     = (username, pokemon) => apiClient.get(`/users/${username}/pokemon/${pokemon}`)
 
@@ -21,6 +24,8 @@ export const deletePokemon
 export const retrieveUserPokemonMoves
     = (username, pokemon) => apiClient.get(`/users/${username}/pokemon/${pokemon}/moves`)
 
-
 export const retrieveSpeciesPokemonMoves
     = (id) => apiClient.get(`/pokemonspecies/${id}/moves`)
+
+export const attack
+    = (username, pokemon, moveId, opponentPokemon) => apiClient.put(`/users/${username}/pokemon/${pokemon}/moves/${moveId}/opp/${opponentPokemon}`)

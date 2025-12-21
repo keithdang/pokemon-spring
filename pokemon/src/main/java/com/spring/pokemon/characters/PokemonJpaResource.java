@@ -48,7 +48,9 @@ public class PokemonJpaResource {
 	@GetMapping("/users/{username}/pokemon/{id}")
 	public Pokemon retrievePokemon(@PathVariable String username,
 			@PathVariable int id) {
-		return pokemonRepository.findById(id).get();
+		Pokemon pokemon =  pokemonRepository.findById(id).get();
+//		System.out.println("KDLOG: "+pokemon.getCurrentHp1());
+		return pokemon;
 	}
 
 	@DeleteMapping("/users/{username}/pokemon/{id}")
@@ -103,4 +105,48 @@ public class PokemonJpaResource {
 	    return pokemon.getMoves();
 	}
 
+	@GetMapping("/users/{username}/pokemon/{id}/moves/{moveId}")
+	public Move getPokemonMove(
+	        @PathVariable String username,
+	        @PathVariable Integer id,
+	        @PathVariable Integer moveId
+	) {
+	    Pokemon pokemon = pokemonRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
+
+	    // Verify ownership
+	    if (!pokemon.getOwner().getUsername().equals(username)) {
+	        throw new RuntimeException("Not your Pokémon");
+	    }
+
+	    return pokemon.getMoves().stream()
+	            .filter(move -> move.getId().equals(moveId))
+	            .findFirst()
+	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
+	}
+	
+	@PutMapping("/users/{username}/pokemon/{id}/moves/{moveId}/opp/{oppId}")
+	public Pokemon attack(
+	        @PathVariable String username,
+	        @PathVariable Integer id,
+	        @PathVariable Integer moveId,
+	        @PathVariable Integer oppId
+	) {
+	    Pokemon pokemon = pokemonRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
+
+	    Pokemon oppPokemon = pokemonRepository.findById(oppId)
+	            .orElseThrow(() -> new RuntimeException("Pokemon not found")); 
+	    // Verify ownership
+	    if (!pokemon.getOwner().getUsername().equals(username)) {
+	        throw new RuntimeException("Not your Pokémon");
+	    }
+
+	    Move moveOb = pokemon.getMoves().stream()
+	            .filter(move -> move.getId().equals(moveId))
+	            .findFirst()
+	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
+	    oppPokemon.takeDamage(moveOb.getDamage());
+	    return pokemonRepository.save(oppPokemon);
+	}
 }

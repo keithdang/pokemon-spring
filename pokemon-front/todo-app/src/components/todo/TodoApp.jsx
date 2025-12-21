@@ -13,6 +13,7 @@ import PokemonComponent from '../pokemon/PokemonComponent'
 import PokemonDetailComponent from '../pokemon/PokemonDetailComponent'
 import TrainerPokemonComponent from '../pokemon/TrainerPokemonComponent'
 import TrainerPokemonDetailComponent from '../pokemon/TrainerPokemonDetailComponent'
+import Battle from '../pokemon/Battle'
 
 function AuthenticatedRoute({children}) {
     const authContext = useAuth()
@@ -72,6 +73,12 @@ export default function TodoApp() {
                         <Route path='/speciespokemon/:id' element={
                             <AuthenticatedRoute>
                                 <PokemonDetailComponent />
+                            </AuthenticatedRoute>
+                        } />
+
+                        <Route path='/battle' element={
+                            <AuthenticatedRoute>
+                                <Battle />
                             </AuthenticatedRoute>
                         } />
 

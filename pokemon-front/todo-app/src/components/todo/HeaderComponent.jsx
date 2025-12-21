@@ -37,6 +37,10 @@ function HeaderComponent() {
                                     {isAuthenticated 
                                             && <Link className="nav-link" to="/trainerpokemon">Your Pokemon</Link>}                                    
                                 </li>
+                                <li className="nav-item">
+                                    {isAuthenticated 
+                                            && <Link className="nav-link" to="/battle">Battle</Link>}                                    
+                                </li>
                             </ul>
                         </div>
                         <ul className="navbar-nav">

@@ -68,7 +68,7 @@ export default function PokemonComponent() {
                                     <td>{pokemonOb.id}</td>
                                     <td>{pokemonOb.name}</td>
                                     <td>{pokemonOb.types.join(" / ")}</td>
-                                                                        <td>
+                                    <td>
                                         <button
                                             className="btn btn-info me-2"
                                             onClick={() => navigate(`/speciespokemon/${pokemonOb.id}`)}
