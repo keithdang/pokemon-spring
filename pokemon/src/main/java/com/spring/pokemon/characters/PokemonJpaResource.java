@@ -232,6 +232,11 @@ public class PokemonJpaResource {
 	        if (!oppEff.isEmpty()) log.add(oppEff);
 	    }else {
 	        log.add(oppPokemon.getName() + " has fainted!");
+	        int level = pokemon.getLevel();
+	        pokemon.gainExperience(oppPokemon.getLevel() * 10);
+	        if(pokemon.getLevel() > level) {
+	        	log.add(pokemon.getName() + " levelled up to "+pokemon.getLevel()+ "!");
+	        }
 	    }
 	    
 //	    ArrayList<Pokemon> pokeList = new ArrayList<Pokemon>();

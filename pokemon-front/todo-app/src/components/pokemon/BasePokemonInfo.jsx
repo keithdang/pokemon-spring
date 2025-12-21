@@ -1,6 +1,6 @@
 
 
-export default function BasePokemonInfo({pokemon}) {
+export default function BasePokemonInfo({pokemon, ifUser = false}) {
     return (
         <div>
             <table className="table">
@@ -9,6 +9,7 @@ export default function BasePokemonInfo({pokemon}) {
                            <th>Name</th>
                            <th>Level</th>
                            <th>Hp</th>
+                           {ifUser && <th>Exp</th>}
                        </tr>
                    </thead>
                    <tbody>
@@ -16,6 +17,7 @@ export default function BasePokemonInfo({pokemon}) {
                            <td>{pokemon.name}</td>
                            <td>{pokemon.level}</td>
                            <td>{pokemon.currentHp} / {pokemon.maxHp}</td>
+                           {ifUser && <td>{pokemon.currentXp} / {pokemon.xpToNextLevel}</td>}
                        </tr>
                    </tbody>
                </table>

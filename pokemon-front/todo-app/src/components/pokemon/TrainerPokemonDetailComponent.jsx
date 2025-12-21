@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../todo/security/AuthContext'
 import { retrieveUserPokemonMoves, retrieveUserPokemon } from '../todo/api/PokemonApiService'
+import BasePokemonInfo from './BasePokemonInfo'
 
 export default function TrainerPokemonDetailComponent() {
 
@@ -36,22 +37,7 @@ export default function TrainerPokemonDetailComponent() {
     return (
         <div className="container">
             <h2>Info</h2>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Level</th>
-                        <th>Hp</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr key={pokemon.id}>
-                        <td>{pokemon.name}</td>
-                        <td>{pokemon.level}</td>
-                        <td>{pokemon.currentHp} / {pokemon.maxHp}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <BasePokemonInfo pokemon={pokemon} ifUser ={true}/>
             <h2>Moves</h2>
 
             <table className="table">

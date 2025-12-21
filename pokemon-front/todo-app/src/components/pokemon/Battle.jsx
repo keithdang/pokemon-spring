@@ -68,6 +68,7 @@ export default function Battle() {
                 })
     }
         function handleChangePokemon(pokemonId) {
+        setBattleLog([]);
         changePokemon("computer", pokemonId)
         .then(response => {
             setMessage(response.data?.message ?? "Change successful!");
@@ -81,7 +82,6 @@ export default function Battle() {
    return (
         <div className="container">
             <h1>Battle</h1>
-            {/* {message && <div className="alert alert-info">{message}</div>} */}
             <ul className="list-group">
                 {battleLog.map((line, index) => (
                     <li key={index} className="list-group-item">
@@ -90,17 +90,22 @@ export default function Battle() {
                 ))}
             </ul>
             {cpuPokemon && cpuPokemon[0] &&
-            <div>
-                <h3>CPU:</h3>
-                <BasePokemonInfo pokemon={cpuPokemon[0]}/>
-            </div>
+                <div>
+                    <h3>CPU:</h3>
+                    <BasePokemonInfo pokemon={cpuPokemon[0]}/>
+                    
+                </div>
+            }
+            {pokemon && pokemon[0] && 
+                <div>
+                    <h3>You:</h3>
+                    <BasePokemonInfo pokemon={pokemon[0]} ifUser ={true}/>
+                </div>
             }
             {battle ? 
             <div>
                 {pokemon && pokemon[0] &&
                         <div>
-                            <h3>You:</h3>
-                            <BasePokemonInfo pokemon={pokemon[0]}/>
                         <h2>Moves</h2>
                         <table className="table">
                                 <thead>

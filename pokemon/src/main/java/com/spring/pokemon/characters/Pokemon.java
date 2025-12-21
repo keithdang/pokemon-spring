@@ -40,12 +40,17 @@ public class Pokemon {
     
     private int maxHp;
     private int currentHp;
+    
+    private int currentXp;
+    private int xpToNextLevel;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "trainer_id")
     private Trainer owner;
 	
 	public Pokemon() {
+	    this.currentXp = 0;
+	    this.xpToNextLevel = calculateXpToNextLevel(1);
 	}
 	
 
@@ -74,8 +79,10 @@ public class Pokemon {
 	}
 	
 	public void setLevel(int level) {
-		this.level = level;
-		recalculateHp(false);	
+	    this.level = level;
+	    this.xpToNextLevel = calculateXpToNextLevel(level);
+	    this.currentXp = 0;
+	    recalculateHp(true);
 	}
     
     public PokemonSpecies getSpecies() { return species; }
@@ -98,6 +105,14 @@ public class Pokemon {
     
     public int getCurrentHp() {
         return currentHp;
+    }
+    
+    public int getCurrentXp() {
+        return currentXp;
+    }
+
+    public int getXpToNextLevel() {
+        return xpToNextLevel;
     }
     
 	@Override
@@ -126,6 +141,24 @@ public class Pokemon {
         this.maxHp = newMaxHp;
     }
    
+   private int calculateXpToNextLevel(int level) {
+	    return 50 + (level * level * 10);
+	}
+   public void gainExperience(int xp) {
+	    this.currentXp += xp;
+
+	    while (this.currentXp >= this.xpToNextLevel) {
+	        this.currentXp -= this.xpToNextLevel;
+	        levelUp();
+	    }
+	}
+   private void levelUp() {
+	    this.level++;
+	    this.xpToNextLevel = calculateXpToNextLevel(this.level);
+
+	    // Recalculate HP and fully heal on level-up
+	    recalculateHp(true);
+	}
 	   public void takeDamage(int damage) {
 	       this.currentHp = Math.max(0, this.currentHp - damage);
 	   }
