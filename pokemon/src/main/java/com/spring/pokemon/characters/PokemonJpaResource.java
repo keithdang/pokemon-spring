@@ -1,6 +1,7 @@
 package com.spring.pokemon.characters;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -147,12 +148,22 @@ public class PokemonJpaResource {
 	            .filter(move -> move.getId().equals(moveId))
 	            .findFirst()
 	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
-	    Move oppMove = oppPokemon.getMoves().iterator().next();
+//	    Move oppMove = oppPokemon.getMoves().iterator().next();
 	    int userDamage = DamageCalculator.calculateDamage(pokemon, oppPokemon, userMove);
 	    oppPokemon.takeDamage(userDamage);
-	    if(oppPokemon.getCurrentHp() != 0) {
-	    	int oppDamage = DamageCalculator.calculateDamage(oppPokemon, pokemon, oppMove);
-	    	pokemon.takeDamage(oppDamage);
+	    if(oppPokemon.getCurrentHp() > 0) {
+	        Move oppMove = oppPokemon.getMoves().stream()
+	                .max(Comparator.comparingInt(
+	                        move -> DamageCalculator.calculateDamage(
+	                                oppPokemon,
+	                                pokemon,
+	                                move
+	                        )
+	                ))
+	                .orElseThrow(() -> new RuntimeException("Opponent has no moves"));
+
+	        int oppDamage = DamageCalculator.calculateDamage(oppPokemon, pokemon, oppMove);
+	        pokemon.takeDamage(oppDamage);
 	    }
 	    ArrayList<Pokemon> pokeList = new ArrayList<Pokemon>();
 	    pokeList.add(pokemonRepository.save(oppPokemon));
