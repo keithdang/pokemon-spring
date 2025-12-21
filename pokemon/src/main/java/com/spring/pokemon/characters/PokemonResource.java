@@ -21,37 +21,37 @@ public class PokemonResource {
 		this.todoService = todoService;
 	}
 	
-	@GetMapping("/users/{username}/pokemon")
-	public List<Pokemon> retrieveTodos(@PathVariable String username) {
-		return todoService.findByUsername(username);
-	}
+//	@GetMapping("/users/{username}/pokemon")
+//	public List<Pokemon> retrieveTodos(@PathVariable String username) {
+//		return todoService.findByUsername(username);
+//	}
+//
+//	@GetMapping("/users/{username}/pokemon/{id}")
+//	public Pokemon retrieveTodo(@PathVariable String username,
+//			@PathVariable int id) {
+//		return todoService.findById(id);
+//	}
+//
+//	@DeleteMapping("/users/{username}/pokemon/{id}")
+//	public ResponseEntity<Void> deleteTodo(@PathVariable String username,
+//			@PathVariable int id) {
+//		todoService.deleteById(id);
+//		return ResponseEntity.noContent().build();
+//	}
 
-	@GetMapping("/users/{username}/pokemon/{id}")
-	public Pokemon retrieveTodo(@PathVariable String username,
-			@PathVariable int id) {
-		return todoService.findById(id);
-	}
-
-	@DeleteMapping("/users/{username}/pokemon/{id}")
-	public ResponseEntity<Void> deleteTodo(@PathVariable String username,
-			@PathVariable int id) {
-		todoService.deleteById(id);
-		return ResponseEntity.noContent().build();
-	}
-
-	@PutMapping("/users/{username}/pokemon/{id}")
-	public Pokemon updateTodo(@PathVariable String username,
-			@PathVariable int id, @RequestBody Pokemon todo) {
-		todoService.updatePokemon(todo);
-		return todo;
-	}
-
-	@PostMapping("/users/{username}/pokemon")
-	public Pokemon  createTodo(@PathVariable String username,
-			 @RequestBody Pokemon todo) {
-		Pokemon createdTodo = todoService.addTodo(username, todo.getLevel() );
-		
-		return createdTodo;
-	}
+//	@PutMapping("/users/{username}/pokemon/{id}")
+//	public Pokemon updateTodo(@PathVariable String username,
+//			@PathVariable int id, @RequestBody Pokemon todo) {
+//		todoService.updatePokemon(todo);
+//		return todo;
+//	}
+//
+//	@PostMapping("/users/{username}/pokemon")
+//	public Pokemon  createTodo(@PathVariable String username,
+//			 @RequestBody Pokemon todo) {
+//		Pokemon createdTodo = todoService.addTodo(username, todo.getLevel() );
+//		
+//		return createdTodo;
+//	}
 
 }

@@ -61,6 +61,9 @@ export default function Battle() {
                     if (playerPokemon.currentHp <= 0 || opponentPokemon.currentHp <= 0) {
                         setBattle(false)
                     }
+                    if(opponentPokemon.currentHp <= 0){
+                        handleChangePokemon(opponentPokemon.id)
+                    }
                 })
                 .catch(error => {
                     console.log(error)
@@ -68,7 +71,6 @@ export default function Battle() {
                 })
     }
         function handleChangePokemon(pokemonId) {
-        setBattleLog([]);
         changePokemon("computer", pokemonId)
         .then(response => {
             setMessage(response.data?.message ?? "Change successful!");
@@ -82,13 +84,7 @@ export default function Battle() {
    return (
         <div className="container">
             <h1>Battle</h1>
-            <ul className="list-group">
-                {battleLog.map((line, index) => (
-                    <li key={index} className="list-group-item">
-                        {line}
-                    </li>
-                ))}
-            </ul>
+   
             {cpuPokemon && cpuPokemon[0] &&
                 <div>
                     <h3>CPU:</h3>
@@ -135,15 +131,27 @@ export default function Battle() {
                     }
             </div>:
             <div>
-                <button onClick={() => setBattle(true)}>
+                <button onClick={() => {
+                    setBattleLog(["Begin!"])
+                    setBattle(true)}}>
                     Start
                 </button>
-                <button onClick={() => handleChangePokemon(cpuPokemon[0].id)}>
+                <button onClick={() => 
+                    {
+                        setBattleLog([])
+                        handleChangePokemon(cpuPokemon[0].id)
+                    }}>
                     New Opponent
                 </button>
             </div>
             }
-      
+            <ul className="list-group">
+                {battleLog.map((line, index) => (
+                    <li key={index} className="list-group-item">
+                        {line}
+                    </li>
+                ))}
+            </ul>
         </div>
    )
 }

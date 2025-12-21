@@ -26,14 +26,17 @@ import com.spring.pokemon.trainer.repository.TrainerRepository;
 public class PokemonJpaResource {
 
 	private PokemonRepository pokemonRepository;
+	private PokemonService pokemonService;
 	private final TrainerRepository trainerRepository;
     private final PokemonSpeciesRepository speciesRepository;
 	
 	public PokemonJpaResource( 
 			PokemonRepository todoRepository,
+			PokemonService pokemonService,
 			TrainerRepository trainerRepository,
 			PokemonSpeciesRepository speciesRepository) {
 		this.pokemonRepository = todoRepository;
+		this.pokemonService = pokemonService;
 		this.trainerRepository = trainerRepository;
 		this.speciesRepository = speciesRepository;
 	}
@@ -127,50 +130,7 @@ public class PokemonJpaResource {
 	            .findFirst()
 	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
 	}
-	
-//	@PutMapping("/users/{username}/pokemon/{id}/moves/{moveId}/opp/{oppId}")
-//	public List<Pokemon> attack(
-//	        @PathVariable String username,
-//	        @PathVariable Integer id,
-//	        @PathVariable Integer moveId,
-//	        @PathVariable Integer oppId
-//	) {
-//	    Pokemon pokemon = pokemonRepository.findById(id)
-//	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
-//
-//	    Pokemon oppPokemon = pokemonRepository.findById(oppId)
-//	            .orElseThrow(() -> new RuntimeException("Pokemon not found")); 
-//	    // Verify ownership
-//	    if (!pokemon.getOwner().getUsername().equals(username)) {
-//	        throw new RuntimeException("Not your Pokémon");
-//	    }
-//
-//	    Move userMove = pokemon.getMoves().stream()
-//	            .filter(move -> move.getId().equals(moveId))
-//	            .findFirst()
-//	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
-//	    
-//	    int userDamage = DamageCalculator.calculateDamage(pokemon, oppPokemon, userMove);
-//	    oppPokemon.takeDamage(userDamage);
-//	    if(oppPokemon.getCurrentHp() > 0) {
-//	        Move oppMove = oppPokemon.getMoves().stream()
-//	                .max(Comparator.comparingInt(
-//	                        move -> DamageCalculator.calculateDamage(
-//	                                oppPokemon,
-//	                                pokemon,
-//	                                move
-//	                        )
-//	                ))
-//	                .orElseThrow(() -> new RuntimeException("Opponent has no moves"));
-//
-//	        int oppDamage = DamageCalculator.calculateDamage(oppPokemon, pokemon, oppMove);
-//	        pokemon.takeDamage(oppDamage);
-//	    }
-//	    ArrayList<Pokemon> pokeList = new ArrayList<Pokemon>();
-//	    pokeList.add(pokemonRepository.save(oppPokemon));
-//	    pokeList.add(pokemonRepository.save(pokemon));
-//	    return pokeList;
-//	}
+
 	@PutMapping("/users/{username}/pokemon/{id}/moves/{moveId}/opp/{oppId}")
 	public BattleResult attack(
 	        @PathVariable String username,
@@ -194,8 +154,6 @@ public class PokemonJpaResource {
 	            .findFirst()
 	            .orElseThrow(() -> new RuntimeException("Move not found for this Pokémon"));
 	    
-//	    int userDamage = DamageCalculator.calculateDamage(pokemon, oppPokemon, userMove);
-//	    oppPokemon.takeDamage(userDamage);
 	    double playerMultiplier =
 	            DamageCalculator.calculateMultiplier(pokemon, oppPokemon, userMove);
 
@@ -207,7 +165,6 @@ public class PokemonJpaResource {
 	    log.add(pokemon.getName() + " used " + userMove.getName() + "!");
 	    String eff = DamageCalculator.effectivenessText(playerMultiplier);
 	    if (!eff.isEmpty()) log.add(eff);
-	    
 	    if(oppPokemon.getCurrentHp() > 0) {
 	        Move oppMove = oppPokemon.getMoves().stream()
 	                .max(Comparator.comparingDouble(
@@ -239,7 +196,6 @@ public class PokemonJpaResource {
 	        }
 	    }
 	    
-//	    ArrayList<Pokemon> pokeList = new ArrayList<Pokemon>();
 	    pokemonRepository.save(oppPokemon);
 	    pokemonRepository.save(pokemon);
 	    return new BattleResult(pokemon, oppPokemon, log);
@@ -248,33 +204,6 @@ public class PokemonJpaResource {
 	@PutMapping("/change/users/{username}/pokemon/{id}")
 	public Pokemon changePokemon(@PathVariable String username,
 			@PathVariable int id) {
-	       Trainer computer = trainerRepository.findByUsername(username)
-	                .orElseGet(() -> trainerRepository.save(new Trainer(username)));
-	       pokemonRepository.deleteById(id);
-	       long speciesCount = speciesRepository.count();
-	       if (speciesCount == 0) {
-	           throw new RuntimeException("No Pokémon species available");
-	       }
-	       
-	       int randomIndex = ThreadLocalRandom.current()
-	               .nextInt((int) speciesCount);
-	       
-	       PokemonSpecies randomSpecies = speciesRepository
-	               .findAll()
-	               .stream()
-	               .skip(randomIndex)
-	               .findFirst()
-	               .orElseThrow(() -> new RuntimeException("Failed to select random species"));
-
-	       Pokemon newPokemon = new Pokemon();
-	       newPokemon.setName(randomSpecies.getName());
-	       newPokemon.setLevel(5);
-	       newPokemon.setOwner(computer);
-	       newPokemon.setSpecies(randomSpecies);
-	       randomSpecies.getLearnableMoves().stream()
-           .limit(4)
-           .forEach(newPokemon.getMoves()::add);
-
-	       return pokemonRepository.save(newPokemon);
+		return pokemonService.replacePokemon(username, id);
 	}
 }
