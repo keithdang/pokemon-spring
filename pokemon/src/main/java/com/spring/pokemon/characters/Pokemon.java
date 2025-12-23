@@ -109,6 +109,10 @@ public class Pokemon {
         return currentHp;
     }
     
+    public void fullHeal() {
+    	this.currentHp = this.maxHp;
+    }
+    
     public int getCurrentXp() {
         return currentXp;
     }

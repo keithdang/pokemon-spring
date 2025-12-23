@@ -31,8 +31,11 @@ export const attack
     = (username, pokemon, moveId, opponentPokemon) => apiClient.put(`/users/${username}/pokemon/${pokemon}/moves/${moveId}/opp/${opponentPokemon}`)
 
 export const changePokemon 
-    = (username, pokemon) => apiClient.put(`change/users/${username}/pokemon/${pokemon}`)
+    = (username, pokemon) => apiClient.put(`users/${username}/pokemon/${pokemon}/change`)
 
 export const setActivePokemon =
     (username, pokemonId) =>
         apiClient.put(`/users/${username}/pokemon/${pokemonId}/set-active`)
+
+export const heal 
+    = (username, pokemon) => apiClient.put(`/users/${username}/pokemon/${pokemon}/heal`)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../todo/security/AuthContext'
-import { retrieveUserPokemonMoves, retrieveUserPokemon } from '../todo/api/PokemonApiService'
+import { retrieveUserPokemonMoves, retrieveUserPokemon,heal } from '../todo/api/PokemonApiService'
 import BasePokemonInfo from './BasePokemonInfo'
 
 export default function TrainerPokemonDetailComponent() {
@@ -58,6 +58,17 @@ export default function TrainerPokemonDetailComponent() {
                     ))}
                 </tbody>
             </table>
+            <button
+                className="btn btn-warning"
+                onClick={() => {
+                    heal(username, pokemon.id)
+                        .then(response => {
+                            setPokemon(response.data)
+                        })
+                        .catch(error => console.log(error))
+                }}
+            >
+                            Heal</button> 
         </div>
     )
 }

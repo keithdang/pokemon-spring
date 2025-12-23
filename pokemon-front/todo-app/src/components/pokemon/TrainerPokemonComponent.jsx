@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../todo/security/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { deletePokemon, retrieveAllUserPokemon, setActivePokemon } from '../todo/api/PokemonApiService'
+import { deletePokemon, retrieveAllUserPokemon, setActivePokemon, heal } from '../todo/api/PokemonApiService'
 export default function TrainerPokemonComponent() {
     const [pokemon,setPokemon] = useState([])
 
@@ -47,8 +47,8 @@ export default function TrainerPokemonComponent() {
                 <table className="table">
                     <thead>
                             <tr>
-                                <th>Id</th>
                                 <th>Name</th>
+                                <th>Health</th>
                                 <th>Level</th>
                                 <th>View</th>
                                 <th>Delete</th>
@@ -60,8 +60,8 @@ export default function TrainerPokemonComponent() {
                         pokemon.map(
                             pokemonOb => (
                                 <tr key={pokemonOb.id}>
-                                    <td>{pokemonOb.id}</td>
                                     <td>{pokemonOb.name}</td>
+                                    <td>{pokemonOb.currentHp}/{pokemonOb.maxHp}</td>
                                     <td>{pokemonOb.level}</td>
                                     <td>
                                         <button
@@ -74,7 +74,7 @@ export default function TrainerPokemonComponent() {
                                     <td> <button className="btn btn-warning" 
                                                     onClick={() => deletePokemonCall(pokemonOb.id)}>Delete</button> </td>
                                     <td>
-                                        <button
+                                       {pokemonOb.partyOrder !== 0 &&  <button
                                             className="btn btn-success"
                                             onClick={() =>     
                                                 setActivePokemon(username, pokemonOb.id)
@@ -83,8 +83,8 @@ export default function TrainerPokemonComponent() {
                                                 })
                                                 .catch(error => console.log(error))}
                                         >
-                                            Use in Battle
-                                        </button>
+                                            Set 1st
+                                        </button>}
                                     </td>
                                 </tr>
                             )

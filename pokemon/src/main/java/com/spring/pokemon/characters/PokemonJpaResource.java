@@ -56,7 +56,6 @@ public class PokemonJpaResource {
 	public Pokemon retrievePokemon(@PathVariable String username,
 			@PathVariable int id) {
 		Pokemon pokemon =  pokemonRepository.findById(id).get();
-//		System.out.println("KDLOG: "+pokemon.getCurrentHp1());
 		return pokemon;
 	}
 
@@ -191,6 +190,10 @@ public class PokemonJpaResource {
 	        log.add(oppPokemon.getName() + " used " + oppMove.getName() + "!");
 	        String oppEff = DamageCalculator.effectivenessText(oppMultiplier);
 	        if (!oppEff.isEmpty()) log.add(oppEff);
+	        
+	        if(pokemon.getCurrentHp() == 0) {
+	        	log.add(pokemon.getName() + "has fainted!");
+	        }
 	    }else {
 	        log.add(oppPokemon.getName() + " has fainted!");
 	        int level = pokemon.getLevel();
@@ -205,7 +208,7 @@ public class PokemonJpaResource {
 	    return new BattleResult(pokemon, oppPokemon, log);
 	}
 	
-	@PutMapping("/change/users/{username}/pokemon/{id}")
+	@PutMapping("/users/{username}/pokemon/{id}/change")
 	public Pokemon changePokemon(@PathVariable String username,
 			@PathVariable int id) {
 		return pokemonService.replacePokemon(username, id);
@@ -235,5 +238,20 @@ public class PokemonJpaResource {
 
 	    pokemonRepository.saveAll(party);
 	    return party;
+	}
+	
+	@PutMapping("/users/{username}/pokemon/{id}/heal")
+	public Pokemon healPokemon(
+			@PathVariable String username,
+	        @PathVariable int id){
+	    Pokemon pokemon = pokemonRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
+
+	    if (!pokemon.getOwner().getUsername().equals(username)) {
+	        throw new RuntimeException("Not your Pokémon");
+	    }
+	    
+        pokemon.fullHeal();
+        return pokemonRepository.save(pokemon);
 	}
 }
