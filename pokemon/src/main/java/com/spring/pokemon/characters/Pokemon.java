@@ -43,6 +43,8 @@ public class Pokemon {
     
     private int currentXp;
     private int xpToNextLevel;
+    
+    private int partyOrder;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "trainer_id")
@@ -113,6 +115,14 @@ public class Pokemon {
 
     public int getXpToNextLevel() {
         return xpToNextLevel;
+    }
+    
+    public int getPartyOrder() {
+        return partyOrder;
+    }
+
+    public void setPartyOrder(int partyOrder) {
+        this.partyOrder = partyOrder;
     }
     
 	@Override

@@ -48,7 +48,8 @@ public class PokemonJpaResource {
 	
 	@GetMapping("/users/{username}/pokemon")
 	public List<Pokemon> retrievePokemons(@PathVariable String username) {
-		return pokemonRepository.findByOwnerUsername(username);
+		return pokemonRepository.findByOwnerUsernameOrderByPartyOrderAsc(username);
+//		return pokemonRepository.findByOwnerUsername(username);
 	}
 
 	@GetMapping("/users/{username}/pokemon/{id}")
@@ -81,13 +82,16 @@ public class PokemonJpaResource {
 
         PokemonSpecies species = speciesRepository.findById(request.speciesId())
                 .orElseThrow(() -> new RuntimeException("Species not found"));
-        System.out.println("KDLOG:"+request);
+        
+        int nextOrder = pokemonRepository.countByOwnerUsername(username);
 
         Pokemon pokemon = new Pokemon();
         pokemon.setName(request.name());
         pokemon.setLevel(request.level());
         pokemon.setOwner(trainer);
         pokemon.setSpecies(species);
+        pokemon.setPartyOrder(nextOrder);
+        
         species.getLearnableMoves()
         .stream()
         .limit(4)
@@ -205,5 +209,31 @@ public class PokemonJpaResource {
 	public Pokemon changePokemon(@PathVariable String username,
 			@PathVariable int id) {
 		return pokemonService.replacePokemon(username, id);
+	}
+	
+	@PutMapping("/users/{username}/pokemon/{id}/set-active")
+	public List<Pokemon> setActivePokemon(
+	        @PathVariable String username,
+	        @PathVariable int id) {
+
+	    List<Pokemon> party =
+	            pokemonRepository.findByOwnerUsernameOrderByPartyOrderAsc(username);
+
+	    Pokemon selected = party.stream()
+	            .filter(p -> p.getId() == id)
+	            .findFirst()
+	            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
+
+	    int index = 0;
+	    selected.setPartyOrder(index++);
+
+	    for (Pokemon p : party) {
+	        if (!p.getId().equals(id)) {
+	            p.setPartyOrder(index++);
+	        }
+	    }
+
+	    pokemonRepository.saveAll(party);
+	    return party;
 	}
 }

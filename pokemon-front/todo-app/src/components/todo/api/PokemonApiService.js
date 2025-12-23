@@ -32,3 +32,7 @@ export const attack
 
 export const changePokemon 
     = (username, pokemon) => apiClient.put(`change/users/${username}/pokemon/${pokemon}`)
+
+export const setActivePokemon =
+    (username, pokemonId) =>
+        apiClient.put(`/users/${username}/pokemon/${pokemonId}/set-active`)

@@ -13,4 +13,8 @@ public interface PokemonRepository extends JpaRepository<Pokemon, Integer>{
 	
 	List<Pokemon> findAll();
 
+//	int countByOwnerUsername(String username);
+    List<Pokemon> findByOwnerUsernameOrderByPartyOrderAsc(String username);
+
+    int countByOwnerUsername(String username);
 }

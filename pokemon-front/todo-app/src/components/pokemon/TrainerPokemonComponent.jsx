@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../todo/security/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { deletePokemon, retrieveAllUserPokemon } from '../todo/api/PokemonApiService'
+import { deletePokemon, retrieveAllUserPokemon, setActivePokemon } from '../todo/api/PokemonApiService'
 export default function TrainerPokemonComponent() {
     const [pokemon,setPokemon] = useState([])
 
@@ -52,6 +52,7 @@ export default function TrainerPokemonComponent() {
                                 <th>Level</th>
                                 <th>View</th>
                                 <th>Delete</th>
+                                <th>Order</th>
                             </tr>
                     </thead>
                     <tbody>
@@ -72,6 +73,19 @@ export default function TrainerPokemonComponent() {
                                     </td>
                                     <td> <button className="btn btn-warning" 
                                                     onClick={() => deletePokemonCall(pokemonOb.id)}>Delete</button> </td>
+                                    <td>
+                                        <button
+                                            className="btn btn-success"
+                                            onClick={() =>     
+                                                setActivePokemon(username, pokemonOb.id)
+                                                .then(response => {
+                                                    setPokemon([...response.data].sort((a, b) => a.partyOrder - b.partyOrder))
+                                                })
+                                                .catch(error => console.log(error))}
+                                        >
+                                            Use in Battle
+                                        </button>
+                                    </td>
                                 </tr>
                             )
                         )
