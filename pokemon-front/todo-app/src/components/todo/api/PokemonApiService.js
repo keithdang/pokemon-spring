@@ -21,6 +21,9 @@ export const addPokemonToTrainer
 export const deletePokemon
     = (username,  id) => apiClient.delete(`/users/${username}/pokemon/${id}`)
 
+export const updatePokemon
+    = (username,  id, pokemon) => apiClient.put(`/users/${username}/pokemon/${id}`, pokemon)
+
 export const retrieveUserPokemonMoves
     = (username, pokemon) => apiClient.get(`/users/${username}/pokemon/${pokemon}/moves`)
 

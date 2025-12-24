@@ -25,10 +25,10 @@ function HeaderComponent() {
                                         && <Link className="nav-link" to="/welcome/in28minutes">Home</Link>}
                                     
                                 </li> */}
-                                {/* <li className="nav-item">
+                                <li className="nav-item">
                                     {isAuthenticated 
                                             && <Link className="nav-link" to="/todos">List</Link>}                                    
-                                </li> */}
+                                </li>
                                 <li className="nav-item">
                                     {isAuthenticated 
                                             && <Link className="nav-link" to="/pokemon">Pokemon</Link>}                                    

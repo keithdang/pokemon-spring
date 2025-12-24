@@ -68,9 +68,13 @@ public class PokemonJpaResource {
 
 	@PutMapping("/users/{username}/pokemon/{id}")
 	public Pokemon updatePokemon(@PathVariable String username,
-			@PathVariable int id, @RequestBody Pokemon todo) {
-		pokemonRepository.save(todo);
-		return todo;
+			@PathVariable int id, @RequestBody Pokemon incoming) {
+    	Pokemon existing = pokemonRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Pokemon not found"));
+
+        existing.setName(incoming.getName());
+
+        return pokemonRepository.save(existing);
 	}
 
 	@PostMapping("/users/{username}/pokemon")
@@ -192,7 +196,7 @@ public class PokemonJpaResource {
 	        if (!oppEff.isEmpty()) log.add(oppEff);
 	        
 	        if(pokemon.getCurrentHp() == 0) {
-	        	log.add(pokemon.getName() + "has fainted!");
+	        	log.add(pokemon.getName() + " has fainted!");
 	        }
 	    }else {
 	        log.add(oppPokemon.getName() + " has fainted!");

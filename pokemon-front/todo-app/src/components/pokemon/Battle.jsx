@@ -98,10 +98,11 @@ export default function Battle() {
                             } else {
                                 setBattle(false) // no Pokémon left
                                 setCanBattle(false)
+                                var noMore = "No more Pokémon available!";
                                 setBattleLog(prevLog =>
-                                    prevLog.includes("No more Pokémon available!")
+                                    prevLog.includes(noMore)
                                         ? prevLog
-                                        : [...prevLog, "No more Pokémon available!"]
+                                        : [...prevLog, noMore]
                                 )
                             }
                             return prev
@@ -123,8 +124,6 @@ export default function Battle() {
         changePokemon("computer", pokemonId)
         .then(response => {
             setMessage(response.data?.message ?? "Change successful!");
-            // setCpuPokemon(response.data)
-            // refreshPokemon();  
             retrieveAllComputerPokemon()
             .then(response => {
                 setCpuPokemon(response.data)
