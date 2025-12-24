@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../todo/security/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { deletePokemon, retrieveAllUserPokemon, setActivePokemon, heal } from '../todo/api/PokemonApiService'
+import { deletePokemon, retrieveAllUserPokemon, setActivePokemon } from '../todo/api/PokemonApiService'
+import {TYPE_COLORS} from './TYPE_COLOURS'
+
 export default function TrainerPokemonComponent() {
     const [pokemon,setPokemon] = useState([])
 
@@ -49,6 +51,7 @@ export default function TrainerPokemonComponent() {
                             <tr>
                                 <th>Image</th>
                                 <th>Name</th>
+                                <th>Type</th>
                                 <th>Health</th>
                                 <th>Level</th>
                                 <th>View</th>
@@ -68,6 +71,17 @@ export default function TrainerPokemonComponent() {
                                         />
                                     </td>
                                     <td>{pokemonOb.name}</td>
+                                    <td>
+                                        {pokemonOb.species.types.map(type => (
+                                        <span
+                                            key={type}
+                                            className="type-badge"
+                                            style={{ backgroundColor: TYPE_COLORS[type] || '#999' }}
+                                        >
+                                            {type}
+                                        </span>
+                                        ))}
+                                    </td>
                                     <td>{pokemonOb.currentHp}/{pokemonOb.maxHp}</td>
                                     <td>{pokemonOb.level}</td>
                                     <td>

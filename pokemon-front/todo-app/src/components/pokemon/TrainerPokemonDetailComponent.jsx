@@ -8,6 +8,7 @@ import { retrieveUserPokemonMoves,
 } from '../todo/api/PokemonApiService'
 import {Formik, Form, Field, ErrorMessage} from 'formik'
 import BasePokemonInfo from './BasePokemonInfo'
+import {TYPE_COLORS} from './TYPE_COLOURS'
 
 export default function TrainerPokemonDetailComponent() {
 
@@ -85,7 +86,16 @@ export default function TrainerPokemonDetailComponent() {
                         <tr key={move.id}>
                             <td>{move.name}</td>
                             <td>{move.damage}</td>
-                            <td>{move.type}</td>
+                            <td>
+                                <span
+                                    className="type-badge"
+                                    style={{
+                                        backgroundColor: TYPE_COLORS[move.type] || '#999'
+                                    }}
+                                >
+                                    {move.type}
+                                </span>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

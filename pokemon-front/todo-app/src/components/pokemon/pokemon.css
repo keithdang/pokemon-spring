@@ -31,3 +31,14 @@
   align-items: center;
   gap: 12px;
 }
+
+.type-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px; /* fully rounded pill */
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

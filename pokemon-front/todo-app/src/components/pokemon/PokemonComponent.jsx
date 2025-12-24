@@ -3,6 +3,8 @@ import { useAuth } from '../todo/security/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { retrieveAllPokemon, addPokemonToTrainer } from '../todo/api/PokemonApiService'
 import './pokemon.css';
+import {TYPE_COLORS} from './TYPE_COLOURS'
+
 export default function PokemonComponent() {
     const [pokemon,setPokemon] = useState([])
 
@@ -74,7 +76,17 @@ export default function PokemonComponent() {
                                         />
                                     </td>
                                     <td>{pokemonOb.name}</td>
-                                    <td>{pokemonOb.types.join(" / ")}</td>
+                                    <td>
+                                        {pokemonOb.types.map(type => (
+                                        <span
+                                            key={type}
+                                            className="type-badge"
+                                            style={{ backgroundColor: TYPE_COLORS[type] || '#999' }}
+                                        >
+                                            {type}
+                                        </span>
+                                        ))}
+                                    </td>
                                     <td>
                                         <button
                                             className="btn btn-info me-2"
