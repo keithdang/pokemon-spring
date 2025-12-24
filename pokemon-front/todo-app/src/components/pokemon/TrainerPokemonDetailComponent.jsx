@@ -9,6 +9,7 @@ import { retrieveUserPokemonMoves,
 import {Formik, Form, Field, ErrorMessage} from 'formik'
 import BasePokemonInfo from './BasePokemonInfo'
 import {TYPE_COLORS} from './TYPE_COLOURS'
+import MovesComponent from './MovesComponent'
 
 export default function TrainerPokemonDetailComponent() {
 
@@ -72,34 +73,7 @@ export default function TrainerPokemonDetailComponent() {
             <h2>Info</h2>
             <BasePokemonInfo pokemon={pokemon} ifUser ={true}/>
             <h2>Moves</h2>
-
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Power</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {moves.map(move => (
-                        <tr key={move.id}>
-                            <td>{move.name}</td>
-                            <td>{move.damage}</td>
-                            <td>
-                                <span
-                                    className="type-badge"
-                                    style={{
-                                        backgroundColor: TYPE_COLORS[move.type] || '#999'
-                                    }}
-                                >
-                                    {move.type}
-                                </span>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <MovesComponent moves={moves} />
             <div>
                 <button
                     className="btn btn-info me-2"

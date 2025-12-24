@@ -8,6 +8,7 @@ import { retrieveAllComputerPokemon,
     changePokemon
 } from '../todo/api/PokemonApiService'
 import BasePokemonInfo from './BasePokemonInfo'
+import MovesComponent from './MovesComponent'
 
 export default function Battle() {
     const [pokemon,setPokemon] = useState([])
@@ -156,7 +157,12 @@ export default function Battle() {
             {battle && battlePokemon &&
                         <div className='pokemon'>
                         <h2>Moves</h2>
-                        <table className="table">
+                        <MovesComponent 
+                            moves={moves} 
+                            handleAttack={handleAttack} 
+                            attackerId={battlePokemon.id} 
+                            defenderId={cpuPokemon[0].id}/>
+                        {/* <table className="table">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -180,7 +186,8 @@ export default function Battle() {
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table></div>
+                            </table> */}
+                            </div>
                     }
             <div>
                 {canBattle && !battle &&
