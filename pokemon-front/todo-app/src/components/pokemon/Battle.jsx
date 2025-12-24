@@ -137,24 +137,24 @@ export default function Battle() {
    
 }
    return (
-        <div className="container">
-            <h1>Battle</h1>
-   
+        <div className="container battle">
+            <div class="header">
+                <h1>Battle</h1>
+            </div>
             {cpuPokemon && cpuPokemon[0] &&
-                <div>
+                <div className='pokemon'>
                     <h3>CPU:</h3>
                     <BasePokemonInfo pokemon={cpuPokemon[0]}/>
-                    
                 </div>
             }
             {battlePokemon && 
-                <div>
+                <div className='pokemon'>
                     <h3>You:</h3>
                     <BasePokemonInfo pokemon={battlePokemon} ifUser ={true}/>
                 </div>
             }
             {battle && battlePokemon &&
-                        <div>
+                        <div className='pokemon'>
                         <h2>Moves</h2>
                         <table className="table">
                                 <thead>
@@ -181,7 +181,7 @@ export default function Battle() {
                                     ))}
                                 </tbody>
                             </table></div>
-                    }:
+                    }
             <div>
                 {canBattle && !battle &&
                 <button onClick={() => {

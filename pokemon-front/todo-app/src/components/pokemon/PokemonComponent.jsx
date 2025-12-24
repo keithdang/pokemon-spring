@@ -54,6 +54,7 @@ export default function PokemonComponent() {
                     <thead>
                             <tr>
                                 <th>Id</th>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>View</th>
@@ -66,6 +67,12 @@ export default function PokemonComponent() {
                             pokemonOb => (
                                 <tr key={pokemonOb.id}>
                                     <td>{pokemonOb.id}</td>
+                                    <td>
+                                        <img
+                                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonOb.id}.png`}
+                                        alt={pokemonOb.name}
+                                        />
+                                    </td>
                                     <td>{pokemonOb.name}</td>
                                     <td>{pokemonOb.types.join(" / ")}</td>
                                     <td>

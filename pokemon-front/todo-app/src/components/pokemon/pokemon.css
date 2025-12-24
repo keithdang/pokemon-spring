@@ -10,3 +10,24 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     z-index: 1000;
 }
+
+.battle {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  /* background-color: dodgerblue; */
+  padding: 5px;
+}
+
+.header {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.pokemon {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 12px;
+}

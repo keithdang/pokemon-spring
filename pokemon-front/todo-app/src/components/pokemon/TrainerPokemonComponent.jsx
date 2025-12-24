@@ -47,6 +47,7 @@ export default function TrainerPokemonComponent() {
                 <table className="table">
                     <thead>
                             <tr>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Health</th>
                                 <th>Level</th>
@@ -60,6 +61,12 @@ export default function TrainerPokemonComponent() {
                         pokemon.map(
                             pokemonOb => (
                                 <tr key={pokemonOb.id}>
+                                    <td>
+                                        <img
+                                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonOb.species.id}.png`}
+                                        alt={pokemonOb.name}
+                                        />
+                                    </td>
                                     <td>{pokemonOb.name}</td>
                                     <td>{pokemonOb.currentHp}/{pokemonOb.maxHp}</td>
                                     <td>{pokemonOb.level}</td>
