@@ -68,8 +68,6 @@ export default function Battle() {
     
     }
     function getNextBattlePokemon(party, faintedId) {
-        console.log("getNextBattlePokemon");
-        console.log(party);
         return party.find(p => p.id !== faintedId && p.currentHp > 0) || null
     }
     function handleAttack(moveId, pokemonId, cpuId) {
@@ -151,7 +149,7 @@ export default function Battle() {
             {battlePokemon && 
                 <div className='pokemon'>
                     <h3>You:</h3>
-                    <BasePokemonInfo pokemon={battlePokemon} ifUser ={true}/>
+                    <BasePokemonInfo pokemon={battlePokemon} showExp ={true}/>
                 </div>
             }
             {battle && battlePokemon &&
@@ -162,43 +160,22 @@ export default function Battle() {
                             handleAttack={handleAttack} 
                             attackerId={battlePokemon.id} 
                             defenderId={cpuPokemon[0].id}/>
-                        {/* <table className="table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Power</th>
-                                        <th>Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {moves.map(move => (
-                                        <tr key={move.id}>
-                                            <td>
-                                                    <button
-                                                        className="btn btn-info me-2"
-                                                        onClick={() => handleAttack(move.id,battlePokemon.id, cpuPokemon[0].id)}
-                                                    >
-                                                        {move.name}
-                                                    </button>
-                                            </td>
-                                            <td>{move.damage}</td>
-                                            <td>{move.type}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table> */}
-                            </div>
+                        </div>
                     }
             <div>
                 {canBattle && !battle &&
-                <button onClick={() => {
+                <button 
+                    className="btn btn-success me-2"
+                    onClick={() => {
                     setBattleLog(["Begin!"])
                     setBattle(true)
                     }}>
                     Start
                 </button>
 }
-                <button onClick={() => 
+                <button 
+                    className="btn btn-warning"
+                    onClick={() => 
                     {
                         setBattleLog([])
                         handleChangePokemon(cpuPokemon[0].id)

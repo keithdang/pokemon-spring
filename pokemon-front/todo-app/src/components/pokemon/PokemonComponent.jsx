@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../todo/security/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { retrieveAllPokemon, addPokemonToTrainer } from '../todo/api/PokemonApiService'
+import BasePokemonInfo from './BasePokemonInfo'
 import './pokemon.css';
 import {TYPE_COLORS} from './TYPE_COLOURS'
 
@@ -52,61 +53,24 @@ export default function PokemonComponent() {
         )}
         <h1>Pokemon </h1>
             <div>
-                <table className="table">
-                    <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>View</th>
-                                <th>Add</th>
-                            </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        pokemon.map(
-                            pokemonOb => (
-                                <tr key={pokemonOb.id}>
-                                    <td>{pokemonOb.id}</td>
-                                    <td>
-                                        <img
-                                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonOb.id}.png`}
-                                        alt={pokemonOb.name}
-                                        />
-                                    </td>
-                                    <td>{pokemonOb.name}</td>
-                                    <td>
-                                        {pokemonOb.types.map(type => (
-                                        <span
-                                            key={type}
-                                            className="type-badge"
-                                            style={{ backgroundColor: TYPE_COLORS[type] || '#999' }}
-                                        >
-                                            {type}
-                                        </span>
-                                        ))}
-                                    </td>
-                                    <td>
-                                        <button
-                                            className="btn btn-info me-2"
-                                            onClick={() => navigate(`/speciespokemon/${pokemonOb.id}`)}
-                                        >
-                                            View
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button onClick={() => handleAddPokemon(pokemonOb)}>
-                                            Add
-                                        </button>
-                                    </td>
-                                </tr>
-                            )
-                        )
-                    }
-                    </tbody>
-
-                </table>
+                <BasePokemonInfo
+                            pokemon={pokemon}
+                            mode = 'species'
+                            actions={pokemonOb => (
+                            <>
+                                <button
+                                    className="btn btn-info me-2"
+                                    onClick={() => navigate(`/speciespokemon/${pokemonOb.id}`)}
+                                >
+                                    View
+                                </button>
+                                    <button 
+                                        className="btn btn-success"
+                                        onClick={() => handleAddPokemon(pokemonOb)}>
+                                        Add
+                                    </button>
+                            </>)}
+                            />
             </div>
         </div>
     )

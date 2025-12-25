@@ -36,7 +36,7 @@ export default function PokemonDetailComponent() {
     return (
         <div className="container">
             <h2>Info</h2>
-            <BasePokemonInfo pokemon={pokemon} ifSpecies={true}/>
+            <BasePokemonInfo pokemon={pokemon} mode='species'/>
             <h2>Moves</h2>
             <MovesComponent moves={moves} />
         </div>

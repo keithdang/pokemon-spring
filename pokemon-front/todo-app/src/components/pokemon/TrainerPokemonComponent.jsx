@@ -3,6 +3,7 @@ import { useAuth } from '../todo/security/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { deletePokemon, retrieveAllUserPokemon, setActivePokemon } from '../todo/api/PokemonApiService'
 import {TYPE_COLORS} from './TYPE_COLOURS'
+import BasePokemonInfo from './BasePokemonInfo'
 
 export default function TrainerPokemonComponent() {
     const [pokemon,setPokemon] = useState([])
@@ -46,74 +47,35 @@ export default function TrainerPokemonComponent() {
         )}
         <h1>Pokemon </h1>
             <div>
-                <table className="table">
-                    <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Health</th>
-                                <th>Level</th>
-                                <th>View</th>
-                                <th>Delete</th>
-                                <th>Order</th>
-                            </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        pokemon.map(
-                            pokemonOb => (
-                                <tr key={pokemonOb.id}>
-                                    <td>
-                                        <img
-                                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonOb.species.id}.png`}
-                                        alt={pokemonOb.name}
-                                        />
-                                    </td>
-                                    <td>{pokemonOb.name}</td>
-                                    <td>
-                                        {pokemonOb.species.types.map(type => (
-                                        <span
-                                            key={type}
-                                            className="type-badge"
-                                            style={{ backgroundColor: TYPE_COLORS[type] || '#999' }}
-                                        >
-                                            {type}
-                                        </span>
-                                        ))}
-                                    </td>
-                                    <td>{pokemonOb.currentHp}/{pokemonOb.maxHp}</td>
-                                    <td>{pokemonOb.level}</td>
-                                    <td>
-                                        <button
-                                            className="btn btn-info me-2"
-                                            onClick={() => navigate(`/trainerpokemon/${pokemonOb.id}`)}
-                                        >
-                                            View
-                                        </button>
-                                    </td>
-                                    <td> <button className="btn btn-warning" 
-                                                    onClick={() => deletePokemonCall(pokemonOb.id)}>Delete</button> </td>
-                                    <td>
-                                       {pokemonOb.partyOrder !== 0 &&  <button
-                                            className="btn btn-success"
-                                            onClick={() =>     
-                                                setActivePokemon(username, pokemonOb.id)
-                                                .then(response => {
-                                                    setPokemon([...response.data].sort((a, b) => a.partyOrder - b.partyOrder))
-                                                })
-                                                .catch(error => console.log(error))}
-                                        >
-                                            Set 1st
-                                        </button>}
-                                    </td>
-                                </tr>
-                            )
-                        )
-                    }
-                    </tbody>
-
-                </table>
+           <BasePokemonInfo
+                pokemon={pokemon}
+                mode="user"
+                showExp
+                actions={pokemonOb => (
+                <>
+                    <button
+                    className="btn btn-info me-2"
+                    onClick={() => navigate(`/trainerpokemon/${pokemonOb.id}`)}
+                    >
+                    View
+                    </button>
+                    <button className="btn btn-warning me-2" 
+                        onClick={() => deletePokemonCall(pokemonOb.id)}>Delete</button> 
+                        {pokemonOb.partyOrder !== 0 &&  <button
+                            className="btn btn-success"
+                            onClick={() =>     
+                                setActivePokemon(username, pokemonOb.id)
+                                .then(response => {
+                                    setPokemon([...response.data].sort((a, b) => a.partyOrder - b.partyOrder))
+                                })
+                                .catch(error => console.log(error))}
+                        >
+                        Set 1st
+                    </button>}
+                </>
+                )}
+            />
+            
             </div>
         </div>
     )
