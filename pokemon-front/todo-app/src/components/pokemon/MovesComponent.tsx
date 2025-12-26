@@ -9,7 +9,8 @@ export default function MovesComponent({
   defenderId
 }: MovesComponentProps) {
   if (!moves || moves.length === 0) return null
-
+  if (handleAttack && (attackerId == null || defenderId == null)) return null
+  
   return (
     <table className="table">
       <thead>
@@ -26,7 +27,7 @@ export default function MovesComponent({
               {handleAttack ? (
                 <button
                   className="btn btn-info me-2"
-                  onClick={() => handleAttack(move.id, attackerId, defenderId)}
+                  onClick={() => handleAttack(move.id, attackerId!, defenderId!)}
                 >
                   {move.name}
                 </button>

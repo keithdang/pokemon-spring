@@ -1,20 +1,14 @@
 import React from 'react'
 import BasePokemonRow from './BasePokemonRow'
-import { BasePokemon } from './types' // assume you have your types exported from a types file
+import { BasePokemon, BasePokemonInfoProps } from './types' // assume you have your types exported from a types file
 
-type BasePokemonInfoProps = {
-  pokemon: BasePokemon | BasePokemon[]
-  mode?: 'user' | 'species'
-  showExp?: boolean
-  actions?: (pokemon: BasePokemon) => React.ReactNode
-}
 
-export default function BasePokemonInfo({
+export default function BasePokemonInfo<T extends BasePokemon>({
   pokemon,
   mode = 'user',
   showExp = false,
   actions
-}: BasePokemonInfoProps) {
+}: BasePokemonInfoProps<T>) {
   if (!pokemon) return null
 
   const pokemonList = Array.isArray(pokemon) ? pokemon : [pokemon]

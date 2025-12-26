@@ -1,5 +1,14 @@
+export type RouteParams = {
+  id: string;
+};
+
+export type NameFormValues = {
+  name: string;
+};
+
 export type PokemonSpecies = {
   id: number;
+  name: string;
   types: string[];
 };
 
@@ -12,21 +21,16 @@ export type UserPokemon = {
   currentXp?: number;
   xpToNextLevel?: number;
   species: PokemonSpecies;
+  partyOrder?: number;
 };
 
-export type SpeciesPokemon = {
-  id: number;
-  name: string;
-  types: string[];
-};
+export type BasePokemon = UserPokemon | PokemonSpecies;
 
-export type BasePokemon = UserPokemon | SpeciesPokemon;
-
-export type BasePokemonRowProps = {
-  pokemon: BasePokemon | null;
+export type BasePokemonRowProps<T extends BasePokemon> = {
+  pokemon: T;
   mode?: "user" | "species";
   showExp?: boolean;
-  actions?: (pokemon: BasePokemon) => React.ReactNode;
+  actions?: (pokemon: T) => React.ReactNode;
 };
 
 export type Move = {
@@ -43,6 +47,13 @@ export type MovesComponentProps = {
     attackerId: number,
     defenderId: number
   ) => void;
-  attackerId: number;
-  defenderId: number;
+  attackerId?: number;
+  defenderId?: number;
+};
+
+export type BasePokemonInfoProps<T extends BasePokemon> = {
+  pokemon: T | T[];
+  mode?: "user" | "species";
+  showExp?: boolean;
+  actions?: (pokemon: T) => React.ReactNode;
 };

@@ -6,12 +6,12 @@ function isUserPokemon(pokemon: BasePokemon): pokemon is UserPokemon {
   return 'species' in pokemon
 }
 
-export default function BasePokemonRow({
+export default function BasePokemonRow<T extends BasePokemon>({
   pokemon,
   mode = 'user',
   showExp = false,
   actions
-}: BasePokemonRowProps) {
+}: BasePokemonRowProps<T>) {
   if (!pokemon) return null
   if (mode === 'user' && !('species' in pokemon)) return null
   console.log(pokemon)

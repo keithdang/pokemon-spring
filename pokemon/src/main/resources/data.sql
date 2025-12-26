@@ -32,6 +32,30 @@ VALUES (7, 'Squirtle', 10);
 INSERT INTO pokemon_species_types (pokemon_species_id, types)
 VALUES (7, 'WATER');
 
+INSERT INTO pokemon_species (id, name, base_hp)
+VALUES (25, 'Pikachu', 10);
+
+INSERT INTO pokemon_species_types (pokemon_species_id, types)
+VALUES (25, 'ELECTRIC');
+
+INSERT INTO pokemon_species (id, name, base_hp)
+VALUES (79, 'Slowpoke', 10);
+
+INSERT INTO pokemon_species_types (pokemon_species_id, types)
+VALUES (79, 'WATER');
+
+INSERT INTO pokemon_species_types (pokemon_species_id, types)
+VALUES (79, 'PSYCHIC');
+
+INSERT INTO pokemon_species (id, name, base_hp)
+VALUES (94, 'Gengar', 10);
+
+INSERT INTO pokemon_species_types (pokemon_species_id, types)
+VALUES (94, 'GHOST');
+
+INSERT INTO pokemon_species_types (pokemon_species_id, types)
+VALUES (94, 'POISON');
+
 --INSERT INTO pokemon (id, name, trainer_id, pokemon_species_id, level)
 --VALUES (101, 'froggy', 1, 1, 1);
 --
@@ -56,6 +80,18 @@ VALUES (5, 'Tackle', 'NORMAL', 10);
 INSERT INTO move (id, name,element_type,damage)
 VALUES (6, 'Tail Whip', 'NORMAL', 10);
 
+INSERT INTO move (id, name,element_type,damage)
+VALUES (7, 'Psybeam', 'PSYCHIC', 10);
+
+INSERT INTO move (id, name,element_type,damage)
+VALUES (8, 'Shadow Ball', 'GHOST', 10);
+
+INSERT INTO move (id, name,element_type,damage)
+VALUES (9, 'Hyper Beam', 'NORMAL', 20);
+
+INSERT INTO move (id, name,element_type,damage)
+VALUES (10, 'Thunder', 'ELECTRIC', 20);
+
 INSERT INTO species_moves(move_id, species_id)
 VALUES (1, 4);
 
@@ -74,6 +110,23 @@ VALUES (2, 1);
 INSERT INTO species_moves(move_id, species_id)
 VALUES (5, 1);
 
+INSERT INTO species_moves(move_id, species_id)
+VALUES (7, 79);
+
+INSERT INTO species_moves(move_id, species_id)
+VALUES (4, 79);
+
+INSERT INTO species_moves(move_id, species_id)
+VALUES (8, 94);
+
+INSERT INTO species_moves(move_id, species_id)
+VALUES (9, 94);
+
+INSERT INTO species_moves(move_id, species_id)
+VALUES (5, 25);
+
+INSERT INTO species_moves(move_id, species_id)
+VALUES (10, 25);
 --
 --INSERT INTO pokemon (id, name)
 --VALUES (7, 'Squirtle');
