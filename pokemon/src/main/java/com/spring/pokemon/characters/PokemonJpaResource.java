@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.spring.pokemon.characters.repository.PokemonRepository;
 import com.spring.pokemon.moves.Move;
@@ -83,6 +84,14 @@ public class PokemonJpaResource {
         Trainer trainer = trainerRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Trainer not found"));
 
+        int currentCount = pokemonRepository.countByOwnerUsername(username);
+        if (currentCount >= 6) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Trainer already has 6 Pokémon"
+            );
+        }
+        
         PokemonSpecies species = speciesRepository.findById(request.speciesId())
                 .orElseThrow(() -> new RuntimeException("Species not found"));
         

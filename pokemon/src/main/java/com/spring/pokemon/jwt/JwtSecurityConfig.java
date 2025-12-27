@@ -118,17 +118,17 @@ public class JwtSecurityConfig {
 //		jdbcUserDetailsManager.createUser(admin);
 //		return jdbcUserDetailsManager;
         UserDetails user = User.withUsername("in28minutes")
-                                .password("{noop}dummy")
+                                .password("{noop}dummy1poke")
                                 .authorities("read")
                                 .roles("USER")
                                 .build();
         UserDetails user2 = User.withUsername("keith")
-                .password("{noop}dummy")
+                .password("{noop}dummy1poke")
                 .authorities("read")
                 .roles("USER")
                 .build();
         UserDetails user3 = User.withUsername("computer")
-                .password("{noop}dummy")
+                .password("{noop}dummy1poke")
                 .authorities("read")
                 .roles("USER")
                 .build();

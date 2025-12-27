@@ -11,6 +11,14 @@
     z-index: 1000;
 }
 
+.added-popup.success {
+  background-color: #28a745; /* green */
+}
+
+.added-popup.error {
+  background-color: #dc3545; /* red */
+}
+
 .battle {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
