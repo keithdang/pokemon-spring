@@ -65,8 +65,8 @@ public class JwtSecurityConfig {
                             auth.requestMatchers("/", //#CHANGE
                             		"/authenticate", "/actuator", "/actuator/*")
                                 .permitAll()
-                                .requestMatchers("/h2-console/**")
-                                .permitAll()
+//                                .requestMatchers("/h2-console/**")
+//                                .permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS,"/**")
                                 .permitAll()
                                 .anyRequest()
@@ -178,14 +178,14 @@ public class JwtSecurityConfig {
         }
     }
     
-	@Bean
-	public DataSource dataSource() {
-		return new EmbeddedDatabaseBuilder()
-				.setType(EmbeddedDatabaseType.H2)
-				.addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
-				.build();
-	}
-    
+//	@Bean
+//	public DataSource dataSource() {
+//		return new EmbeddedDatabaseBuilder()
+//				.setType(EmbeddedDatabaseType.H2)
+//				.addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
+//				.build();
+//	}
+//    
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

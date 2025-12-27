@@ -77,6 +77,9 @@ public class PokemonSpecies {
     public Set<ElementType> getTypes() {
         return types;
     }
+    public void setTypes(Set<ElementType> types) {
+    	this.types = types;
+    }
     
 
 	@Override

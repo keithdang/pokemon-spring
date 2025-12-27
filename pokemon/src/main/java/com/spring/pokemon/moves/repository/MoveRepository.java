@@ -1,6 +1,7 @@
 package com.spring.pokemon.moves.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,5 +12,7 @@ public interface MoveRepository extends JpaRepository<Move, Integer>{
 	List<Move> findByName(String name);
 	
 	List<Move> findAll();
+	
+	Optional<Move> findByNameIgnoreCase(String name);
 
 }

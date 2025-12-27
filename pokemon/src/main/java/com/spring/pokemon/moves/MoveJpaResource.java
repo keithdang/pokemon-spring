@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.pokemon.characters.CreatePokemonRequest;
+import com.spring.pokemon.characters.ElementType;
 import com.spring.pokemon.moves.repository.MoveRepository;
 import com.spring.pokemon.species.repository.PokemonSpeciesRepository;
 
@@ -49,7 +50,7 @@ public class MoveJpaResource {
 		Move move = new Move();
 		move.setName(request.name());
 		move.setId(null);
-		move.setType(request.elementType());
+		move.setType(ElementType.valueOf(request.elementType().toUpperCase()));
 		return moveRepository.save(move);
 	}
 
