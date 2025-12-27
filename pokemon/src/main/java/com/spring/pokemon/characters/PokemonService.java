@@ -59,43 +59,4 @@ public class PokemonService {
 
         return pokemonRepository.save(newPokemon);
     }
-//	private static final List<Pokemon> pokemonList = new ArrayList<>();
-//	
-//	private static int pokemonCount = 0;
-//	
-//	
-//	public List<Pokemon> findAll(){
-//		return pokemonList.stream().toList();
-//	}
-//	
-//	public List<Pokemon> findByUsername(String username){
-//		Predicate<? super Pokemon> predicate = 
-//				todo -> todo.getTrainer().equalsIgnoreCase(username);
-//		System.out.println("KDLOG2"+username);
-//		System.out.println("KDLOG"+pokemonList);
-//		System.out.println("KDLOG"+predicate);
-//		return pokemonList.stream().filter(predicate).toList();
-//	}
-//	
-//	public Pokemon addTodo(String username, int level) {
-//		Pokemon pokemon = new Pokemon();
-//		pokemonList.add(pokemon);
-//		return pokemon;
-//	}
-//	
-//	public void deleteById(int id) {
-//		Predicate<? super Pokemon> predicate = pokemon -> pokemon.getId() == id;
-//		pokemonList.removeIf(predicate);
-//	}
-//
-//	public Pokemon findById(int id) {
-//		Predicate<? super Pokemon> predicate = pokemon -> pokemon.getId() == id;
-//		Pokemon pokemon = pokemonList.stream().filter(predicate).findFirst().get();
-//		return pokemon;
-//	}
-//
-//	public void updatePokemon(Pokemon pokemon) {
-//		deleteById(pokemon.getId());
-//		pokemonList.add(pokemon);
-//	}
-}
+ }

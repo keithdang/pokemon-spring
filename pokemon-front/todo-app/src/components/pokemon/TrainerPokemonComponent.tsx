@@ -55,7 +55,7 @@ export default function TrainerPokemonComponent(): JSX.Element{
         </div>
       )}
 
-      <h1>Pokemon</h1>
+      <h1>{username}'s Pokemon</h1>
 
       <BasePokemonInfo
         pokemon={pokemon}

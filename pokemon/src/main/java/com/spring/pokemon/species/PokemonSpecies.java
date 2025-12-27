@@ -47,8 +47,9 @@ public class PokemonSpecies {
 	public PokemonSpecies() {
 	}
 	
-	public PokemonSpecies(String name, ElementType primary, ElementType secondary, Integer baseHp) {
-        this.name = name;
+	public PokemonSpecies(Integer id, String name, ElementType primary, ElementType secondary, Integer baseHp) {
+        this.id = id;
+		this.name = name;
         this.baseHp = baseHp;
         this.types.add(primary);
         if (secondary != null) {

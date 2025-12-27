@@ -19,12 +19,13 @@ import com.spring.pokemon.species.repository.PokemonSpeciesRepository;
 
 @RestController
 public class MoveJpaResource {
-	
-	
 	private MoveRepository moveRepository;
+	private MoveService moveService;
 	
-	public MoveJpaResource (MoveRepository moveRepository) {
+	public MoveJpaResource (MoveRepository moveRepository,
+			MoveService moveService) {
 		this.moveRepository = moveRepository;
+		this.moveService = moveService;
 	}
 
 	@GetMapping("/moves")
@@ -47,11 +48,20 @@ public class MoveJpaResource {
 
 	@PostMapping("/moves")
 	public Move createMove(@RequestBody CreateMoveRequest request) {
-		Move move = new Move();
-		move.setName(request.name());
-		move.setId(null);
-		move.setType(ElementType.valueOf(request.elementType().toUpperCase()));
-		return moveRepository.save(move);
+		return moveService.createMoveIfMissing(request.name(), 
+				request.damage(), 
+				ElementType.valueOf(request.elementType().toUpperCase()));
 	}
 
+//    public Move createMoveIfMissing(String name, int damage, ElementType type) {
+//        return moveRepository
+//                .findByNameIgnoreCase(name)
+//                .orElseGet(() -> {
+//                    Move m = new Move();
+//                    m.setName(name);
+//                    m.setDamage(damage);
+//                    m.setType(type);
+//                    return moveRepository.save(m);
+//                });
+//    }
 }

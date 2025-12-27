@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.pokemon.characters.repository.PokemonRepository;
 import com.spring.pokemon.moves.Move;
+import com.spring.pokemon.moves.MoveService;
 import com.spring.pokemon.moves.repository.MoveRepository;
 import com.spring.pokemon.species.PokemonSpecies;
 import com.spring.pokemon.species.repository.PokemonSpeciesRepository;
@@ -21,17 +22,20 @@ public class DataInitializer implements CommandLineRunner {
     private final PokemonSpeciesRepository speciesRepository;
     private final PokemonRepository pokemonRepository;
     private final MoveRepository moveRepository;
+    private final MoveService moveService;
 
     public DataInitializer(
             TrainerRepository trainerRepository,
             PokemonSpeciesRepository speciesRepository,
             PokemonRepository pokemonRepository,
-            MoveRepository moveRepository
+            MoveRepository moveRepository,
+            MoveService moveService
     ) {
         this.trainerRepository = trainerRepository;
         this.speciesRepository = speciesRepository;
         this.pokemonRepository = pokemonRepository;
         this.moveRepository = moveRepository;
+        this.moveService = moveService;
     }
 
     @Override
@@ -81,12 +85,12 @@ public class DataInitializer implements CommandLineRunner {
         	        return speciesRepository.save(s);
         	    });
 
-        Move tackle = createMoveIfMissing("Tackle", 10, ElementType.NORMAL);
-        Move razorLeaf = createMoveIfMissing("Razor Leaf", 10, ElementType.GRASS);
-        Move flamethrower= createMoveIfMissing("Flamethrower", 10, ElementType.FIRE);
-        Move tailWhip = createMoveIfMissing("Tail Whip", 10, ElementType.NORMAL);
-        Move bubblebeam = createMoveIfMissing("Bubblebeam", 10, ElementType.WATER);
-        Move hydropump = createMoveIfMissing("Hydro Pump", 15, ElementType.WATER);
+        Move tackle = moveService.createMoveIfMissing("Tackle", 10, ElementType.NORMAL);
+        Move razorLeaf = moveService.createMoveIfMissing("Razor Leaf", 10, ElementType.GRASS);
+        Move flamethrower= moveService.createMoveIfMissing("Flamethrower", 10, ElementType.FIRE);
+        Move tailWhip = moveService.createMoveIfMissing("Tail Whip", 10, ElementType.NORMAL);
+        Move bubblebeam = moveService.createMoveIfMissing("Bubblebeam", 10, ElementType.WATER);
+        Move hydropump = moveService.createMoveIfMissing("Hydro Pump", 15, ElementType.WATER);
         
         if (bulbasaur.getLearnableMoves().isEmpty()) {
             bulbasaur.getLearnableMoves().add(tackle);
@@ -124,17 +128,5 @@ public class DataInitializer implements CommandLineRunner {
 
             pokemonRepository.save(p);
         }
-    }
-    
-    private Move createMoveIfMissing(String name, int damage, ElementType type) {
-        return moveRepository
-                .findByNameIgnoreCase(name)
-                .orElseGet(() -> {
-                    Move m = new Move();
-                    m.setName(name);
-                    m.setDamage(damage);
-                    m.setType(type);
-                    return moveRepository.save(m);
-                });
     }
 }

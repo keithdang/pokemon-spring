@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.pokemon.characters.ElementType;
 import com.spring.pokemon.characters.Pokemon;
 import com.spring.pokemon.moves.Move;
+import com.spring.pokemon.moves.repository.MoveRepository;
 import com.spring.pokemon.species.repository.PokemonSpeciesRepository;
 
 @RestController
@@ -22,15 +24,18 @@ public class PokemonSpeciesJpaResource {
 	private PokemonSpeciesService pokemonService;
 	
 	private PokemonSpeciesRepository pokemonRepository;
+	private final MoveRepository moveRepository;
 	
-	public PokemonSpeciesJpaResource(PokemonSpeciesService todoService, PokemonSpeciesRepository todoRepository) {
+	public PokemonSpeciesJpaResource(PokemonSpeciesService todoService, 
+			PokemonSpeciesRepository todoRepository,
+			MoveRepository moveRepository) {
 		this.pokemonService = todoService;
 		this.pokemonRepository = todoRepository;
+		this.moveRepository = moveRepository;
 	}
 
 	@GetMapping("/pokemonspecies")
 	public List<PokemonSpecies> retrieveAllPokemon() {
-		//return todoService.findByUsername(username);
 		return pokemonRepository.findAll();
 	}
 	
@@ -56,21 +61,17 @@ public class PokemonSpeciesJpaResource {
 	
 	@GetMapping("/users/{username}/pokemonspecies")
 	public List<PokemonSpecies> retrievePokemons(@PathVariable String username) {
-		//return todoService.findByUsername(username);
 		return pokemonRepository.findByName(username);
 	}
 
 	@GetMapping("/users/{username}/pokemonspecies/{id}")
 	public PokemonSpecies retrievePokemon(@PathVariable String username,
 			@PathVariable int id) {
-		//return todoService.findById(id);
 		return pokemonRepository.findById(id).get();
 	}
 
-	@DeleteMapping("/users/{username}/pokemonspecies/{id}")
-	public ResponseEntity<Void> deletePokemon(@PathVariable String username,
-			@PathVariable int id) {
-		//todoService.deleteById(id);
+	@DeleteMapping("pokemonspecies/{id}")
+	public ResponseEntity<Void> deletePokemon(@PathVariable int id) {
 		pokemonRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
@@ -78,17 +79,27 @@ public class PokemonSpeciesJpaResource {
 	@PutMapping("/users/{username}/pokemonspecies/{id}")
 	public PokemonSpecies updatePokemon(@PathVariable String username,
 			@PathVariable int id, @RequestBody PokemonSpecies todo) {
-		//todoService.updateTodo(todo);
 		pokemonRepository.save(todo);
 		return todo;
 	}
 
-	@PostMapping("/users/{username}/pokemonspecies")
-	public PokemonSpecies createPokemon(@PathVariable String username,
-			 @RequestBody PokemonSpecies todo) {
-		todo.setName(username);
-		todo.setId(null);
-		return pokemonRepository.save(todo);
+	@PostMapping("/pokemonspecies")
+	public PokemonSpecies createPokemon(@RequestBody PokemonSpecies pokemon) {
+        return pokemonRepository.save(pokemon);
 	}
+	
+	@PostMapping("/pokemonspecies/{speciesId}/moves/{moveId}")
+	public PokemonSpecies addMoveToSpecies(
+	        @PathVariable Integer speciesId,
+	        @PathVariable Integer moveId) {
 
+	    PokemonSpecies species = pokemonRepository.findById(speciesId)
+	        .orElseThrow(() -> new RuntimeException("Species not found"));
+
+	    Move move = moveRepository.findById(moveId)
+	        .orElseThrow(() -> new RuntimeException("Move not found"));
+
+	    species.getLearnableMoves().add(move);
+	    return pokemonRepository.save(species);
+	}
 }

@@ -15,8 +15,9 @@ function HeaderComponent() {
         <header className="border-bottom border-light border-5 mb-5 p-2">
             <div className="container">
                 <div className="row">
-                    <nav className="navbar navbar-expand-lg">
-                        <p className="navbar-brand ms-2 fs-2 fw-bold text-black">Pokemon</p>
+                    <nav className="navbar navbar-expand-md">
+                        {isAuthenticated && <Link className="navbar-brand ms-2 fs-2 fw-bold text-black" to="/trainerpokemon">Pokemon</Link>}
+                        {/* <p className="navbar-brand ms-2 fs-2 fw-bold text-black">Pokemon</p> */}
                         {/* <a className="navbar-brand ms-2 fs-2 fw-bold text-black" href="https://www.in28minutes.com">Pokemon</a> */}
                         <div className="collapse navbar-collapse">
                             <ul className="navbar-nav">
@@ -31,12 +32,12 @@ function HeaderComponent() {
                                 </li> */}
                                 <li className="nav-item">
                                     {isAuthenticated 
-                                            && <Link className="nav-link" to="/pokemon">Pokemon</Link>}                                    
+                                            && <Link className="nav-link" to="/pokemon">All Pokemon</Link>}                                    
                                 </li>
-                                <li className="nav-item">
+                                {/* <li className="nav-item">
                                     {isAuthenticated 
                                             && <Link className="nav-link" to="/trainerpokemon">Your Pokemon</Link>}                                    
-                                </li>
+                                </li> */}
                                 <li className="nav-item">
                                     {isAuthenticated 
                                             && <Link className="nav-link" to="/battle">Battle</Link>}                                    
