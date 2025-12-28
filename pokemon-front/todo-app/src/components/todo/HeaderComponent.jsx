@@ -17,15 +17,20 @@ function HeaderComponent() {
                 <div className="row">
                     <nav className="navbar navbar-expand-md">
                         {isAuthenticated && <Link className="navbar-brand ms-2 fs-2 fw-bold text-black" to="/trainerpokemon">Pokemon</Link>}
-                        {/* <p className="navbar-brand ms-2 fs-2 fw-bold text-black">Pokemon</p> */}
-                        {/* <a className="navbar-brand ms-2 fs-2 fw-bold text-black" href="https://www.in28minutes.com">Pokemon</a> */}
-                        <div className="collapse navbar-collapse">
-                            <ul className="navbar-nav">
-                                {/* <li className="nav-item">
-                                    {isAuthenticated 
-                                        && <Link className="nav-link" to="/welcome/in28minutes">Home</Link>}
-                                    
-                                </li> */}
+                        <button
+                            className="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#pokemonNavbar"
+                            aria-controls="pokemonNavbar"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                        >
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                        <div className="collapse navbar-collapse" id="pokemonNavbar">
+                            <ul className="navbar-nav me-auto">
+                     
                                 {/* <li className="nav-item">
                                     {isAuthenticated 
                                             && <Link className="nav-link" to="/todos">List</Link>}                                    
@@ -34,10 +39,6 @@ function HeaderComponent() {
                                     {isAuthenticated 
                                             && <Link className="nav-link" to="/pokemon">All Pokemon</Link>}                                    
                                 </li>
-                                {/* <li className="nav-item">
-                                    {isAuthenticated 
-                                            && <Link className="nav-link" to="/trainerpokemon">Your Pokemon</Link>}                                    
-                                </li> */}
                                 <li className="nav-item">
                                     {isAuthenticated 
                                             && <Link className="nav-link" to="/battle">Battle</Link>}                                    
